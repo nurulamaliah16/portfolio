@@ -11,6 +11,7 @@ import { trainings } from "../data";
 export default function Education() {
   const [active, setActive] = useState<number | null>(null);
   const t = active !== null ? trainings[active] : null;
+  const [zoom, setZoom] = useState(false);
 
   // Shrinking sticky header on scroll (same mechanism as the Experience modal).
   const [compact, setCompact] = useState(false);
@@ -18,6 +19,7 @@ export default function Education() {
   useEffect(() => {
     if (active === null) {
       setCompact(false);
+      setZoom(false);
       return;
     }
     let scroller: HTMLElement | null = headerRef.current?.parentElement ?? null;
@@ -190,8 +192,7 @@ export default function Education() {
             >
               <button
                 onClick={() => setActive(null)}
-                className="absolute right-6 grid h-9 w-9 place-items-center rounded-full bg-white/80 text-ink transition-all duration-300 ease-out"
-                style={{ top: pick(20, 13) }}
+                className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-white/80 text-ink shadow-sm"
                 aria-label="Close"
               >
                 <Icon name="x" size={16} />
@@ -203,11 +204,11 @@ export default function Education() {
                 >
                   <Icon name={t.icon} size={pick(26, 20)} />
                 </span>
-                <div className="min-w-0 flex-1 pr-12">
-                  <div className="font-fred font-semibold leading-[1.2] text-ink transition-all duration-300 ease-out" style={{ fontSize: pick(23, 16) }}>
+                <div className="min-w-0 flex-1 pr-10 sm:pr-12">
+                  <div className="font-fred line-clamp-3 font-semibold leading-[1.2] text-ink transition-all duration-300 ease-out sm:line-clamp-none" style={{ fontSize: pick("clamp(17px, 5.2vw, 23px)", 16) }}>
                     {t.title}
                   </div>
-                  <div className="font-bold text-[#5c6b66] transition-all duration-300 ease-out" style={{ fontSize: pick(14, 12.5), marginTop: pick(4, 1) }}>
+                  <div className="font-bold text-[#5c6b66] transition-all duration-300 ease-out" style={{ fontSize: pick("clamp(12px, 3.4vw, 14px)", 12.5), marginTop: pick(4, 1) }}>
                     {t.org}
                   </div>
                 </div>
@@ -236,13 +237,16 @@ export default function Education() {
               <div className="mb-3 text-[13px] font-extrabold uppercase tracking-[0.5px] text-coral">
                 About the training
               </div>
-              <p className="m-0 text-[15px] leading-[1.6] text-[#43544f]">{t.desc}</p>
+              <p className="m-0 text-[13.5px] leading-[1.6] text-[#43544f] sm:text-[15px]">{t.desc}</p>
               {t.certificate && (
                 <>
                   <div className="mb-2.5 mt-[30px] text-[13px] font-extrabold uppercase tracking-[0.5px] text-green">
                     Certificate
                   </div>
-                  <div className="overflow-hidden rounded-2xl border border-ink/10 bg-white">
+                  <button
+                    onClick={() => setZoom(true)}
+                    className="block w-full cursor-zoom-in overflow-hidden rounded-2xl border border-ink/10 bg-white"
+                  >
                     <Image
                       src={t.certificate}
                       alt={`${t.title} certificate`}
@@ -250,13 +254,37 @@ export default function Education() {
                       height={1414}
                       className="h-auto w-full"
                     />
-                  </div>
+                  </button>
                 </>
               )}
             </div>
           </>
         )}
       </Modal>
+
+      {zoom && t?.certificate && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"
+          onClick={() => setZoom(false)}
+        >
+          <button
+            onClick={() => setZoom(false)}
+            className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/20 text-white hover:bg-white/30"
+            aria-label="Close"
+          >
+            <Icon name="x" size={22} />
+          </button>
+          <div className="relative flex h-full max-h-[90vh] w-full max-w-5xl items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <Image
+              src={t.certificate}
+              alt={`${t.title} certificate`}
+              fill
+              className="object-contain"
+              sizes="90vw"
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 }

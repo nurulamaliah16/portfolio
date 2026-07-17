@@ -161,8 +161,7 @@ export default function Experience() {
             >
               <button
                 onClick={() => setActive(null)}
-                className="absolute right-6 grid h-9 w-9 place-items-center rounded-full bg-white/80 text-ink transition-all duration-300 ease-out"
-                style={{ top: pick(20, 13) }}
+                className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-white/80 text-ink shadow-sm"
                 aria-label="Close"
               >
                 <Icon name="x" size={16} />
@@ -174,11 +173,11 @@ export default function Experience() {
                 >
                   <Image src={job.logo} alt={job.org} width={56} height={56} className="h-full w-full object-contain" />
                 </span>
-                <div className="min-w-0 flex-1 pr-12">
-                  <div className="font-fred font-semibold leading-[1.15] text-ink transition-all duration-300 ease-out" style={{ fontSize: pick(24, 16) }}>
+                <div className="min-w-0 flex-1 pr-10 sm:pr-12">
+                  <div className="font-fred font-semibold leading-[1.15] text-ink transition-all duration-300 ease-out" style={{ fontSize: pick("clamp(18px, 5.5vw, 24px)", 16) }}>
                     {job.role}
                   </div>
-                  <div className="font-extrabold transition-all duration-300 ease-out" style={{ color: job.color, fontSize: pick(15, 12.5), marginTop: pick(6, 1) }}>
+                  <div className="font-extrabold transition-all duration-300 ease-out" style={{ color: job.color, fontSize: pick("clamp(12.5px, 3.6vw, 15px)", 12.5), marginTop: pick(6, 1) }}>
                     {job.org}
                   </div>
                 </div>
@@ -209,7 +208,7 @@ export default function Experience() {
                       className="mt-2 h-2 w-2 flex-none rounded-full"
                       style={{ background: job.color }}
                     />
-                    <span className="text-[15px] leading-[1.6] text-[#43544f]" dangerouslySetInnerHTML={{ __html: d }} />
+                    <span className="text-[13.5px] leading-[1.6] text-[#43544f] sm:text-[15px]" dangerouslySetInnerHTML={{ __html: d }} />
                   </div>
                 ))}
               </div>
@@ -219,7 +218,7 @@ export default function Experience() {
                 </div>
                 <span className="text-[12.5px] font-semibold text-[#9aa39e]">Photos & videos</span>
               </div>
-              <div className="grid grid-cols-3 gap-3.5">
+              <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3">
                 {job.gallery.map((g, gi) => (
                   <button
                     key={g}

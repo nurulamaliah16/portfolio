@@ -29,16 +29,21 @@ export default function Research() {
             >
               <div
                 onClick={() => setOpen(isOpen ? null : i)}
-                className="flex cursor-pointer items-center gap-4 px-[22px] py-4"
+                className="flex cursor-pointer items-center gap-3.5 px-4 py-[18px] sm:gap-4 sm:px-[22px] sm:py-4"
               >
-                <span
-                  className="grid h-10 w-10 flex-none place-items-center rounded-xl"
-                  style={{ background: pub.bg, color: pub.color }}
-                >
-                  <Icon name={pub.icon} size={18} />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="mb-1 flex items-center gap-2.5">
+                <div className="order-1 flex flex-none flex-col items-center gap-2 sm:contents">
+                  <span
+                    className="grid h-10 w-10 flex-none place-items-center rounded-xl sm:order-1"
+                    style={{ background: pub.bg, color: pub.color }}
+                  >
+                    <Icon name={pub.icon} size={18} />
+                  </span>
+                  <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-cream text-[#5c6b66] sm:order-3">
+                    <Icon name={isOpen ? "chevron-up" : "chevron-down"} size={15} />
+                  </span>
+                </div>
+                <div className="order-2 min-w-0 flex-1">
+                  <div className="mb-2 flex flex-wrap items-center gap-x-2.5 gap-y-1 sm:mb-1 sm:flex-nowrap">
                     <span
                       className="rounded-full px-2.5 py-0.5 text-[10.5px] font-extrabold uppercase tracking-[0.4px]"
                       style={{ background: pub.bg, color: pub.color }}
@@ -47,11 +52,8 @@ export default function Research() {
                     </span>
                     <span className="text-[12px] font-bold text-[#9aa39e]">{pub.date}</span>
                   </div>
-                  <div className="font-fred text-[16.5px] font-semibold leading-[1.3]">{pub.title}</div>
+                  <div className="font-fred text-[15.5px] font-semibold leading-[1.45] sm:text-[16.5px] sm:leading-[1.3]">{pub.title}</div>
                 </div>
-                <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-cream text-[#5c6b66]">
-                  <Icon name={isOpen ? "chevron-up" : "chevron-down"} size={15} />
-                </span>
               </div>
               <AnimatePresence initial={false}>
                 {isOpen && (
@@ -62,7 +64,7 @@ export default function Research() {
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     className="overflow-hidden"
                   >
-                    <div className="pb-[22px] pl-[78px] pr-[22px] pt-1">
+                    <div className="pb-[22px] pl-4 pr-4 pt-1 sm:pl-[78px] sm:pr-[22px]">
                       <div className="mb-3.5 text-[13.5px] font-bold text-green">{pub.source}</div>
                       {pub.points.length > 0 && (
                         <>

@@ -35,31 +35,35 @@ export default function Skills() {
 
           <div className="my-[22px] h-px bg-ink/10" />
 
-          <div className="mb-3.5 flex flex-wrap items-center gap-2.5">
+          <div className="mb-3.5 flex flex-col items-start gap-2.5 sm:flex-row sm:flex-wrap sm:items-center">
             <span className="mr-1 text-[12px] font-extrabold uppercase tracking-[0.5px] text-coral">Tools</span>
-            {tools.map((t) => (
-              <span
-                key={t.name}
-                className="inline-flex items-center gap-1.5 rounded-full bg-amber-tint px-3 py-[7px] text-[12.5px] font-bold text-[#b07d22]"
-              >
-                <Icon name={t.icon} size={14} />
-                {t.name}
-              </span>
-            ))}
+            <div className="flex flex-wrap gap-2.5 sm:contents">
+              {tools.map((t) => (
+                <span
+                  key={t.name}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-amber-tint px-3 py-[7px] text-[12.5px] font-bold text-[#b07d22]"
+                >
+                  <Icon name={t.icon} size={14} />
+                  {t.name}
+                </span>
+              ))}
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex flex-col items-start gap-2.5 sm:flex-row sm:flex-wrap sm:items-center">
             <span className="mr-1 text-[12px] font-extrabold uppercase tracking-[0.5px] text-green">
               Languages
             </span>
-            <span className="inline-flex items-center gap-2 rounded-full bg-green px-3.5 py-[7px] text-[12.5px] font-extrabold text-cream">
-              <Icon name="badge-check" size={15} style={{ color: "#E8A83C" }} />
-              English · IELTS <span className="text-amber">6.0</span>
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-green-tint px-3 py-[7px] text-[12.5px] font-bold text-green">
-              <Icon name="globe" size={14} />
-              Bahasa Indonesia · Native
-            </span>
+            <div className="flex flex-wrap gap-2.5 sm:contents">
+              <span className="inline-flex items-center gap-2 rounded-full bg-green px-3.5 py-[7px] text-[12.5px] font-extrabold text-cream">
+                <Icon name="badge-check" size={15} style={{ color: "#E8A83C" }} />
+                English · IELTS <span className="text-amber">6.0</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-green-tint px-3 py-[7px] text-[12.5px] font-bold text-green">
+                <Icon name="globe" size={14} />
+                Bahasa Indonesia · Native
+              </span>
+            </div>
           </div>
         </div>
       </Reveal>
