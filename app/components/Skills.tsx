@@ -4,7 +4,7 @@ import { expertise, tools } from "../data";
 
 export default function Skills() {
   return (
-    <section className="px-6 py-16 sm:px-12">
+    <section id="skills" className="px-6 py-16 sm:px-12">
       <div className="mb-[22px]">
         <div className="mb-1.5 text-[15px] font-bold text-coral">Toolkit</div>
         <h2 className="font-fred m-0 text-[34px] font-semibold tracking-[-0.5px] sm:text-[44px]">
@@ -16,7 +16,7 @@ export default function Skills() {
           className="rounded-[22px] border border-ink/5 bg-white px-[30px] py-[26px]"
           style={{ boxShadow: "0 24px 46px -34px rgba(31,61,56,.4)" }}
         >
-          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
             {expertise.map((e) => (
               <div key={e.title} className="flex items-start gap-3">
                 <span

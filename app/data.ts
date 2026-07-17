@@ -170,21 +170,23 @@ export type Work = {
 };
 
 export const works: Work[] = [
-  { id: "ig-1", format: "Post", url: "https://www.instagram.com/p/DYd66nHky7g" },
-  { id: "ig-2", format: "Reel", url: "https://www.instagram.com/reel/DXihnUnk0ja/" },
-  { id: "ig-3", format: "Post", url: "https://www.instagram.com/p/DXD-EAmE1pQ" },
-  { id: "ig-4", format: "Reel", url: "https://www.instagram.com/p/DUFb-q8kUmT/" },
-  { id: "ig-5", format: "Reel", url: "https://www.instagram.com/p/DQa_U2ygRuX/" },
-  { id: "ig-6", format: "Post", url: "https://www.instagram.com/p/DQBFbG1gZj0" },
-  { id: "ig-7", format: "Post", url: "https://www.instagram.com/p/DPLFNumAeR_/" },
-  { id: "ig-8", format: "Reel", url: "https://www.instagram.com/p/DZt5Cl4prIv/" },
-  { id: "ig-9", format: "Post", url: "https://www.instagram.com/p/DYweamCCShN/" },
-  { id: "ig-10", format: "Post", url: "https://www.instagram.com/p/DSquYZ3EmyL" },
-  { id: "ig-11", format: "Post", url: "https://www.instagram.com/p/C4uafGSv_rX" },
-  { id: "ig-12", format: "Post", url: "https://www.instagram.com/p/C4phfmVPDnj" },
-  { id: "ig-13", format: "Post", url: "https://www.instagram.com/p/CoeBiavv8xo" },
-  { id: "ig-14", format: "Post", url: "https://www.instagram.com/p/Ci6f8pTPfJ2" },
-  { id: "ig-15", format: "Post", url: "https://www.instagram.com/p/ClSHMEpP1u7" },
+  { id: "ig-1", format: "Reel", url: "https://www.instagram.com/reel/DSq-u3fk8ws/" },
+  { id: "ig-2", format: "Post", url: "https://www.instagram.com/p/DSquYZ3EmyL" },
+  { id: "ig-3", format: "Reel", url: "https://www.instagram.com/p/DZt5Cl4prIv/" },
+  { id: "ig-4", format: "Reel", url: "https://www.instagram.com/reel/DaCraYnJvgf" },
+  { id: "ig-5", format: "Post", url: "https://www.instagram.com/p/DYweamCCShN/" },
+  { id: "ig-6", format: "Reel", url: "https://www.instagram.com/p/DQa_U2ygRuX/" },
+  { id: "ig-7", format: "Post", url: "https://www.instagram.com/p/DYd66nHky7g" },
+  { id: "ig-8", format: "Reel", url: "https://www.instagram.com/reel/DXihnUnk0ja/" },
+  { id: "ig-9", format: "Post", url: "https://www.instagram.com/p/DXD-EAmE1pQ" },
+  { id: "ig-10", format: "Reel", url: "https://www.instagram.com/p/DUFb-q8kUmT/" },
+  { id: "ig-11", format: "Post", url: "https://www.instagram.com/p/DQBFbG1gZj0" },
+  { id: "ig-12", format: "Post", url: "https://www.instagram.com/p/DPLFNumAeR_/" },
+  { id: "ig-13", format: "Post", url: "https://www.instagram.com/p/C4uafGSv_rX" },
+  { id: "ig-14", format: "Post", url: "https://www.instagram.com/p/C4phfmVPDnj" },
+  { id: "ig-15", format: "Post", url: "https://www.instagram.com/p/CoeBiavv8xo" },
+  { id: "ig-16", format: "Post", url: "https://www.instagram.com/p/Ci6f8pTPfJ2" },
+  { id: "ig-17", format: "Post", url: "https://www.instagram.com/p/ClSHMEpP1u7" },
 ];
 
 export type Publication = {
@@ -268,3 +270,11 @@ export const tools: Tool[] = [
 ];
 
 export const EMAIL = "nurulamaliah@mail.ugm.ac.id";
+
+export const SITE_URL = "https://nurulamaliah.vercel.app";
+
+// Personal profile URLs for Person JSON-LD sameAs. Paste real links here.
+export const SAME_AS: string[] = [
+  "https://www.linkedin.com/in/nurulamaliah16/",
+  "https://www.instagram.com/nurulaamaliahh"
+];

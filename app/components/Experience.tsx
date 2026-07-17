@@ -228,7 +228,7 @@ export default function Experience() {
                   >
                     <Image
                       src={g}
-                      alt={`Activity ${gi + 1}`}
+                      alt={`${job.role} at ${job.org} — activity ${gi + 1}`}
                       fill
                       className="object-cover"
                       sizes="(max-width: 640px) 33vw, 200px"

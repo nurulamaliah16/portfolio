@@ -99,7 +99,7 @@ export default function Research() {
           </span>
           <h3 className="font-fred m-0 text-[26px] font-semibold">Theses &amp; Book Chapters</h3>
         </div>
-        <div className="grid grid-cols-1 gap-[18px] md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 lg:grid-cols-3">
           {researchWorks.map((w, i) => (
             <Reveal key={w.num} delay={i * 0.08}>
               <div

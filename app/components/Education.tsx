@@ -49,7 +49,7 @@ export default function Education() {
   const pick = <T,>(big: T, small: T) => (compact ? small : big);
 
   return (
-    <section className="px-6 py-16 sm:px-12">
+    <section id="education" className="px-6 py-16 sm:px-12">
       <div className="mb-[30px]">
         <SectionHeader eyebrow="Education" title="Where I Studied" />
       </div>

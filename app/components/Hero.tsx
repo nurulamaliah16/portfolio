@@ -39,9 +39,12 @@ export default function Hero() {
     >
       <div>
         <h1 className="font-fred mb-6 text-[46px] font-semibold leading-[1.02] tracking-[-1px] sm:text-[72px]">
-          Hey There,
-          <br />
-          I&apos;m <span className="text-green">Ama</span>
+          <span className="sr-only">Nurul Amaliah — </span>
+          <span aria-hidden="true">
+            Hey There,
+            <br />
+            I&apos;m <span className="text-green">Ama</span>
+          </span>
         </h1>
         <p className="mb-6 max-w-[440px] text-[17px] leading-[1.6] text-[#43544f]">
           Political Science graduate &amp; Master&apos;s student in Politics and Government, working

@@ -4,7 +4,7 @@ import { achievements } from "../data";
 
 export default function Achievements() {
   return (
-    <section className="px-6 py-16 sm:px-12">
+    <section id="achievements" className="px-6 py-16 sm:px-12">
       <div className="mb-[30px]">
         <div className="mb-1.5 text-[15px] font-bold text-coral">Recognition</div>
         <h2 className="font-fred m-0 mb-1.5 text-[34px] font-semibold tracking-[-0.5px] sm:text-[44px]">
