@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --color-page: #e8a83c;
+  --color-cream: #fdfaf3;
+  --color-green: #2c6b5e;
+  --color-ink: #1f3d38;
+  --color-coral: #e85d3d;
+  --color-amber: #e8a83c;
+  --color-green-tint: #e4f0ec;
+  --color-amber-tint: #fdf2e0;
+  --color-coral-tint: #fbe4de;
+  --color-muted: #6b756f;
+
+  --font-body: var(--font-nunito), system-ui, sans-serif;
+  --font-fred: var(--font-fred), system-ui, sans-serif;
+  --font-caveat: var(--font-caveat), cursive;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-page);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-green);
+  color: var(--color-cream);
+}
+
+/* organic blob shapes from the source design */
+.blob-a {
+  border-radius: 63% 37% 54% 46% / 58% 52% 48% 42%;
+}
+.blob-b {
+  border-radius: 58% 42% 47% 53% / 52% 45% 55% 48%;
+}
+
+.font-fred {
+  font-family: var(--font-fred);
+}
+.font-caveat {
+  font-family: var(--font-caveat);
+}
+.font-body {
+  font-family: var(--font-body);
+}
