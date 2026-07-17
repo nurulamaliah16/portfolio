@@ -147,7 +147,7 @@ export const trainings: Training[] = [
     tag: "Certificate of Completion",
     org: "SUSTAIN Program (UGM–NTNU) · Dept. of Politics & Government, FISIPOL UGM",
     desc: "Training on energy transition governance, citizen engagement, advocacy, and Randomized Controlled Trial (RCT) methods.",
-    certificate: "/images/training/energy-and-citizenship/certificate.png",
+    certificate: "/images/training/energy-and-citizenship/certificate.jpg",
   },
   {
     icon: "line-chart",
