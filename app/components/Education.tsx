@@ -1,54 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Icon from "./Icon";
 import Reveal from "./Reveal";
-import Modal from "./Modal";
+import DetailModal from "./DetailModal";
 import SectionHeader from "./SectionHeader";
 import { trainings } from "../data";
+import { useIndexModal } from "../lib/useIndexModal";
 
 export default function Education() {
-  const [active, setActive] = useState<number | null>(null);
-  const t = active !== null ? trainings[active] : null;
-  const [zoom, setZoom] = useState(false);
-
-  // Shrinking sticky header on scroll (same mechanism as the Experience modal).
-  const [compact, setCompact] = useState(false);
-  const headerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (active === null) {
-      setCompact(false);
-      setZoom(false);
-      return;
-    }
-    let scroller: HTMLElement | null = headerRef.current?.parentElement ?? null;
-    while (scroller) {
-      const s = getComputedStyle(scroller);
-      if (s.overflowY === "auto" || s.overflowY === "scroll") break;
-      scroller = scroller.parentElement;
-    }
-    if (!scroller) return;
-
-    let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const s = scroller!;
-        const y = s.scrollTop;
-        setCompact((c) =>
-          c ? y >= 10 : y > 110 && s.scrollHeight - s.clientHeight > 120,
-        );
-      });
-    };
-    onScroll();
-    scroller.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      scroller.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, [active]);
-  const pick = <T,>(big: T, small: T) => (compact ? small : big);
+  const { item: t, open, close } = useIndexModal(trainings);
 
   return (
     <section id="education" className="px-6 py-16 sm:px-12">
@@ -138,7 +99,7 @@ export default function Education() {
         {trainings.map((tr, i) => (
           <Reveal key={tr.title} delay={i * 0.08}>
             <div
-              onClick={() => setActive(i)}
+              onClick={() => open(i)}
               className="flex h-full cursor-pointer flex-col rounded-[20px] border border-ink/5 bg-white px-[26px] py-6 transition-all hover:-translate-y-0.5"
               style={{ boxShadow: "0 20px 40px -32px rgba(31,61,56,.4)" }}
             >
@@ -182,109 +143,61 @@ export default function Education() {
         ))}
       </div>
 
-      <Modal open={t !== null} onClose={() => setActive(null)} hideClose>
+      <DetailModal
+        open={t !== null}
+        onClose={close}
+        bg={t?.bg ?? "#fff"}
+        accent={t?.color ?? "#2C6B5E"}
+        icon={t && <Icon name={t.icon} size={24} />}
+        title={t?.title ?? ""}
+        subtitle={t?.org ?? ""}
+        meta={
+          t && (
+            <>
+              <span
+                className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.3px]"
+                style={{ color: t.color }}
+              >
+                <Icon name={t.certificate ? "badge-check" : "clock"} size={13} />
+                {t.tag}
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[13px] font-bold text-[#5c6b66]">
+                <Icon name="calendar" size={13} />
+                {t.year}
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[13px] font-bold text-[#5c6b66]">
+                <Icon name="clock" size={13} />
+                {t.duration}
+              </span>
+            </>
+          )
+        }
+      >
         {t && (
           <>
-            <div
-              ref={headerRef}
-              className="sticky top-0 z-[5] rounded-t-[26px] px-10 transition-all duration-300 ease-out"
-              style={{ background: t.bg, paddingTop: pick(34, 15), paddingBottom: pick(26, 13) }}
-            >
-              <button
-                onClick={() => setActive(null)}
-                className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-white/80 text-ink shadow-sm"
-                aria-label="Close"
-              >
-                <Icon name="x" size={16} />
-              </button>
-              <div className="flex items-center transition-all duration-300 ease-out" style={{ gap: pick(14, 12) }}>
-                <span
-                  className="grid flex-none place-items-center bg-white transition-all duration-300 ease-out"
-                  style={{ width: pick(56, 38), height: pick(56, 38), borderRadius: pick(16, 11), color: t.color }}
-                >
-                  <Icon name={t.icon} size={pick(26, 20)} />
-                </span>
-                <div className="min-w-0 flex-1 pr-10 sm:pr-12">
-                  <div className="font-fred line-clamp-3 font-semibold leading-[1.2] text-ink transition-all duration-300 ease-out sm:line-clamp-none" style={{ fontSize: pick("clamp(17px, 5.2vw, 23px)", 16) }}>
-                    {t.title}
-                  </div>
-                  <div className="font-bold text-[#5c6b66] transition-all duration-300 ease-out" style={{ fontSize: pick("clamp(12px, 3.4vw, 14px)", 12.5), marginTop: pick(4, 1) }}>
-                    {t.org}
-                  </div>
-                </div>
-              </div>
-              <div className="transition-all duration-300 ease-out" style={{ opacity: compact ? 0 : 1, maxHeight: pick(70, 0), overflow: "hidden", marginTop: pick(14, 0) }}>
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <span
-                    className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.3px]"
-                    style={{ color: t.color }}
-                  >
-                    <Icon name={t.certificate ? "badge-check" : "clock"} size={13} />
-                    {t.tag}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[13px] font-bold text-[#5c6b66]">
-                    <Icon name="calendar" size={13} />
-                    {t.year}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[13px] font-bold text-[#5c6b66]">
-                    <Icon name="clock" size={13} />
-                    {t.duration}
-                  </span>
-                </div>
-              </div>
+            <div className="mb-3 text-[13px] font-extrabold uppercase tracking-[0.5px] text-coral">
+              About the training
             </div>
-            <div className="px-10 pb-9 pt-7">
-              <div className="mb-3 text-[13px] font-extrabold uppercase tracking-[0.5px] text-coral">
-                About the training
-              </div>
-              <p className="m-0 text-[13.5px] leading-[1.6] text-[#43544f] sm:text-[15px]">{t.desc}</p>
-              {t.certificate && (
-                <>
-                  <div className="mb-2.5 mt-[30px] text-[13px] font-extrabold uppercase tracking-[0.5px] text-green">
-                    Certificate
-                  </div>
-                  <button
-                    onClick={() => setZoom(true)}
-                    className="block w-full cursor-zoom-in overflow-hidden rounded-2xl border border-ink/10 bg-white"
-                  >
-                    <Image
-                      src={t.certificate}
-                      alt={`${t.title} certificate`}
-                      width={2000}
-                      height={1414}
-                      className="h-auto w-full"
-                    />
-                  </button>
-                </>
-              )}
-            </div>
+            <p className="m-0 text-[15px] leading-[1.6] text-[#43544f]">{t.desc}</p>
+            {t.certificate && (
+              <>
+                <div className="mb-2.5 mt-[30px] text-[13px] font-extrabold uppercase tracking-[0.5px] text-green">
+                  Certificate
+                </div>
+                <div className="overflow-hidden rounded-2xl border border-ink/10 bg-white">
+                  <Image
+                    src={t.certificate}
+                    alt={`${t.title} certificate`}
+                    width={2000}
+                    height={1414}
+                    className="h-auto w-full"
+                  />
+                </div>
+              </>
+            )}
           </>
         )}
-      </Modal>
-
-      {zoom && t?.certificate && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"
-          onClick={() => setZoom(false)}
-        >
-          <button
-            onClick={() => setZoom(false)}
-            className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/20 text-white hover:bg-white/30"
-            aria-label="Close"
-          >
-            <Icon name="x" size={22} />
-          </button>
-          <div className="relative flex h-full max-h-[90vh] w-full max-w-5xl items-center justify-center" onClick={(e) => e.stopPropagation()}>
-            <Image
-              src={t.certificate}
-              alt={`${t.title} certificate`}
-              fill
-              className="object-contain"
-              sizes="90vw"
-            />
-          </div>
-        </div>
-      )}
+      </DetailModal>
     </section>
   );
 }
