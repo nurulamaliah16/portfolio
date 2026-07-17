@@ -35,10 +35,11 @@ export function useShrinkOnScroll(active: boolean) {
     return () => {
       scroller.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
+      setCompact(false); // reset on close so the next open starts expanded (no compact flash)
     };
   }, [active]);
 
-  // Derive the closed state so we never reset via setState in the effect body. On reopen the
-  // effect's immediate onScroll() recomputes from the fresh scrollTop within a frame.
+  // Belt-and-suspenders: also derive false while closed, covering the no-scroller path where
+  // the cleanup above never registered.
   return { headerRef, compact: active ? compact : false };
 }
