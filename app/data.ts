@@ -4,6 +4,7 @@ export type Job = {
   num: string;
   current: boolean;
   icon: IconName;
+  logo: string;
   org: string;
   dates: string;
   color: string;
@@ -20,10 +21,11 @@ export const experience: Job[] = [
     num: "01",
     current: true,
     icon: "leaf",
+    logo: "/images/experience/unjuk-daya/logo.jpg",
     org: "Unjuk Daya (NGO)",
     dates: "Mar 2026 – Present",
-    color: "#2C6B5E",
-    tint: "#E4F0EC",
+    color: "#6DA89A",
+    tint: "#EDF5F3",
     role: "Head of Social Media",
     desc: "Lead digital strategy for an environmental NGO focused on climate action and conservation.",
     details: [
@@ -32,17 +34,22 @@ export const experience: Job[] = [
       "Translate complex environmental topics into clear, mobilizing stories",
       "Oversee content planning, production, and performance across channels",
     ],
-    gallery: ["exp-1-a", "exp-1-b", "exp-1-c"],
-    link: "#",
+    gallery: [
+      "/images/experience/unjuk-daya/activity-1.jpeg",
+      "/images/experience/unjuk-daya/activity-2.jpeg",
+      "/images/experience/unjuk-daya/activity-3.jpeg",
+    ],
+    link: "https://www.instagram.com/unjukdaya",
   },
   {
     num: "02",
     current: true,
     icon: "book-open-text",
+    logo: "/images/experience/rij/logo.jpg",
     org: "Rumah Inggris Jogja",
     dates: "Jul 2024 – Present",
-    color: "#2C6B5E",
-    tint: "#E4F0EC",
+    color: "#7B8EC4",
+    tint: "#F0F3FA",
     role: "Freelance English Teacher",
     desc: "Design and deliver English lessons for a range of learners.",
     details: [
@@ -50,17 +57,24 @@ export const experience: Job[] = [
       "Delivered engaging lessons tailored to each student’s proficiency level",
       "Supported students in developing communicative English skills for academic and professional purposes",
     ],
-    gallery: ["exp-4-a", "exp-4-b", "exp-4-c"],
-    link: "https://www.instagram.com/rumahinggrisjogja/",
+    gallery: [
+      "/images/experience/rij/activity-1.jpeg",
+      "/images/experience/rij/activity-2.jpeg",
+      "/images/experience/rij/activity-3.jpeg",
+      "/images/experience/rij/activity-4.jpeg",
+      "/images/experience/rij/activity-5.jpeg",
+    ],
+    link: "https://www.instagram.com/rumahinggrisjogja_official",
   },
   {
     num: "03",
     current: false,
     icon: "megaphone",
+    logo: "/images/experience/fcc/logo.jpg",
     org: "Fisipol Crisis Center",
     dates: "Jan 2025 – Dec 2025",
-    color: "#E85D3D",
-    tint: "#FBE4DE",
+    color: "#5B86B8",
+    tint: "#EEF3F9",
     role: "Social Media Officer",
     desc: "Managed social media content strategy for a university crisis center.",
     details: [
@@ -69,28 +83,42 @@ export const experience: Job[] = [
       "Monitor engagement analytics and optimize communication strategy",
       "Coordinate with stakeholders and internal teams to ensure consistent messaging",
     ],
-    gallery: ["exp-2-a", "exp-2-b", "exp-2-c"],
-    link: "https://fisipolcrisiscenter.fisipol.ugm.ac.id/",
+    gallery: [
+      "/images/experience/fcc/activity-1.jpeg",
+      "/images/experience/fcc/activity-2.jpeg",
+      "/images/experience/fcc/activity-3.jpeg",
+      "/images/experience/fcc/activity-4.jpeg",
+    ],
+    link: "https://www.instagram.com/fisipolcrisiscenter",
   },
   {
     num: "04",
     current: false,
     icon: "globe",
-    org: "Hichiikok Foundation & University of Malaya",
+    logo: "/images/experience/gya/logo.jpg",
+    org: "Global Youth Ambassador",
     dates: "Aug 2024 – Sept 2024",
-    color: "#E8A83C",
-    tint: "#FDF2E0",
+    color: "#A08C78",
+    tint: "#F4F1ED",
     role: "Project Leader — Malaysia Volunteer & Youth Conference",
-    desc: "Led a cross-border volunteer and youth conference program in Malaysia.",
+    desc: "Led a cross-border volunteer and youth conference program under the Global Youth Ambassador initiative.",
     details: [
-      "Led cross-border volunteer program in collaboration with Hichiikok Foundation, Malaysia",
-      "Managed the planning and implementation of the Asia Youth Summit in cooperation with International Relations students at University of Malaya (UM)",
+      "Selected as a Global Youth Ambassador and deployed to Malaysia for a cross-border volunteer program",
+      "Led collaboration with <strong>Hichiikok Foundation</strong> on community-based volunteer activities",
+      "Managed the planning and implementation of the Asia Youth Summit in cooperation with International Relations students at <strong>University of Malaya (UM)</strong>",
       "Coordinated international participants, developed the program agenda, and managed partner communication",
       "Facilitated intercultural collaboration between Indonesian and Malaysian youth participants",
-      "Oversaw administrative preparation, documentation, and reporting",
     ],
-    gallery: ["exp-3-a", "exp-3-b", "exp-3-c"],
-    link: "#",
+    gallery: [
+      "/images/experience/gya/activity-1.jpeg",
+      "/images/experience/gya/activity-2.jpeg",
+      "/images/experience/gya/activity-3.jpeg",
+      "/images/experience/gya/activity-4.jpeg",
+      "/images/experience/gya/activity-5.jpeg",
+      "/images/experience/gya/activity-6.jpeg",
+      "/images/experience/gya/activity-7.jpeg",
+    ],
+    link: "https://www.globalyouthambassador.com/",
   },
 ];
 
@@ -104,7 +132,7 @@ export type Training = {
   tag: string;
   org: string;
   desc: string;
-  outputs: string[];
+  certificate?: string;
 };
 
 export const trainings: Training[] = [
@@ -119,7 +147,7 @@ export const trainings: Training[] = [
     tag: "Certificate of Completion",
     org: "SUSTAIN Program (UGM–NTNU) · Dept. of Politics & Government, FISIPOL UGM",
     desc: "Training on energy transition governance, citizen engagement, advocacy, and Randomized Controlled Trial (RCT) methods.",
-    outputs: ["cert-1-a", "cert-1-b", "cert-1-c"],
+    certificate: "/images/training/energy-and-citizenship/certificate.png",
   },
   {
     icon: "line-chart",
@@ -129,45 +157,35 @@ export const trainings: Training[] = [
       "Digital Campaign Training: How to Design Effective and Data-Driven Digital Campaigns",
     year: "2026",
     duration: "4 weeks",
-    tag: "Certificate of Completion",
+    tag: "Ongoing",
     org: "Online Training",
     desc: "Online training on designing evidence-based digital campaigns — audience targeting, campaign strategy, data analysis, and digital advocacy.",
-    outputs: ["cert-2-a", "cert-2-b", "cert-2-c"],
   },
 ];
 
 export type Work = {
   id: string;
   format: "Post" | "Reel";
-  role: string;
-  roleColor: string;
-  roleTint: string;
-  account: string;
   url: string;
-  caption: string;
-  platformLabel: string;
-  platformIcon: IconName;
 };
 
-const rawWorks: Omit<Work, "platformLabel" | "platformIcon">[] = [
-  { id: "ig-s-1", format: "Post", role: "Account Management", roleColor: "#2C6B5E", roleTint: "#E4F0EC", account: "Managed NGO account", url: "https://www.instagram.com/p/DYd66nHky7g/", caption: "Public awareness — gender-based violence & human rights" },
-  { id: "ig-s-2", format: "Reel", role: "Account Management", roleColor: "#2C6B5E", roleTint: "#E4F0EC", account: "Managed NGO account", url: "https://www.instagram.com/reel/DXihnUnk0ja/", caption: "Advocacy reel — human rights & social issues" },
-  { id: "ig-s-3", format: "Post", role: "Account Management", roleColor: "#2C6B5E", roleTint: "#E4F0EC", account: "Managed NGO account", url: "https://www.instagram.com/p/DI-afVtBT99/", caption: "Educational visual content built in Canva" },
-  { id: "ig-s-4", format: "Post", role: "Account Management", roleColor: "#2C6B5E", roleTint: "#E4F0EC", account: "Managed NGO account", url: "https://www.instagram.com/p/DKqjWKzh14D/", caption: "Campaign content for public engagement" },
-  { id: "ig-s-5", format: "Post", role: "Account Management", roleColor: "#2C6B5E", roleTint: "#E4F0EC", account: "Managed NGO account", url: "https://www.instagram.com/p/DLUC5JGBrtK/", caption: "Data-informed awareness campaign" },
-  { id: "ig-s-6", format: "Post", role: "Account Management", roleColor: "#2C6B5E", roleTint: "#E4F0EC", account: "Managed NGO account", url: "https://www.instagram.com/p/DN17PwOwiVB/", caption: "Issue explainer for the community" },
-  { id: "ig-c-1", format: "Reel", role: "Content · Collab", roleColor: "#E85D3D", roleTint: "#FBE4DE", account: "Collaboration", url: "https://www.instagram.com/reel/DZt5Cl4prIv/", caption: "Creator collaboration reel" },
-  { id: "ig-c-2", format: "Reel", role: "Content · Collab", roleColor: "#E85D3D", roleTint: "#FBE4DE", account: "Collaboration", url: "https://www.instagram.com/reel/CmOKt5GpGW6/", caption: "Creator collaboration reel" },
-  { id: "ig-c-3", format: "Reel", role: "Content · Collab", roleColor: "#E85D3D", roleTint: "#FBE4DE", account: "Collaboration", url: "https://www.instagram.com/reel/DQa_U2ygRuX/", caption: "Creator collaboration reel" },
-  { id: "ig-c-4", format: "Reel", role: "Content · Collab", roleColor: "#E85D3D", roleTint: "#FBE4DE", account: "Collaboration", url: "https://www.instagram.com/reel/DMHvd-Yhc_1/", caption: "Creator collaboration reel" },
-  { id: "ig-c-5", format: "Reel", role: "Content · Collab", roleColor: "#E85D3D", roleTint: "#FBE4DE", account: "Collaboration", url: "https://www.instagram.com/reel/DK1G4g_B9BG/", caption: "Creator collaboration reel" },
+export const works: Work[] = [
+  { id: "ig-1", format: "Post", url: "https://www.instagram.com/p/DYd66nHky7g" },
+  { id: "ig-2", format: "Reel", url: "https://www.instagram.com/reel/DXihnUnk0ja/" },
+  { id: "ig-3", format: "Post", url: "https://www.instagram.com/p/DXD-EAmE1pQ" },
+  { id: "ig-4", format: "Reel", url: "https://www.instagram.com/p/DUFb-q8kUmT/" },
+  { id: "ig-5", format: "Reel", url: "https://www.instagram.com/p/DQa_U2ygRuX/" },
+  { id: "ig-6", format: "Post", url: "https://www.instagram.com/p/DQBFbG1gZj0" },
+  { id: "ig-7", format: "Post", url: "https://www.instagram.com/p/DPLFNumAeR_/" },
+  { id: "ig-8", format: "Reel", url: "https://www.instagram.com/p/DZt5Cl4prIv/" },
+  { id: "ig-9", format: "Post", url: "https://www.instagram.com/p/DYweamCCShN/" },
+  { id: "ig-10", format: "Post", url: "https://www.instagram.com/p/DSquYZ3EmyL" },
+  { id: "ig-11", format: "Post", url: "https://www.instagram.com/p/C4uafGSv_rX" },
+  { id: "ig-12", format: "Post", url: "https://www.instagram.com/p/C4phfmVPDnj" },
+  { id: "ig-13", format: "Post", url: "https://www.instagram.com/p/CoeBiavv8xo" },
+  { id: "ig-14", format: "Post", url: "https://www.instagram.com/p/Ci6f8pTPfJ2" },
+  { id: "ig-15", format: "Post", url: "https://www.instagram.com/p/ClSHMEpP1u7" },
 ];
-
-export const works: Work[] = rawWorks.map((w) => ({
-  ...w,
-  platformLabel: "Instagram",
-  platformIcon: "camera",
-}));
 
 export type Publication = {
   icon: IconName;
@@ -182,11 +200,11 @@ export type Publication = {
 };
 
 export const research: Publication[] = [
-  { icon: "handshake", bg: "#E4F0EC", color: "#2C6B5E", tag: "Community Engagement", title: "Community Service Implementation Team Member — Seleksi Pamong Kalurahan, Kalurahan Pleret, Bantul", source: "Faculty of Social and Political Sciences, Universitas Gadjah Mada", date: "Feb 2026", points: [], outputs: ["pub-1-a", "pub-1-b", "pub-1-c"] },
-  { icon: "flask-conical", bg: "#FBE4DE", color: "#E85D3D", tag: "Research Grant", title: "Research Grantee — Negotiating Women’s Leadership Space in Renewable Energy Practices in Yogyakarta", source: "CitRes-Edu (Citizen Engagement & Natural Resource Governance Education)", date: "Sept 2024", points: [], outputs: ["pub-2-a", "pub-2-b", "pub-2-c"] },
-  { icon: "droplets", bg: "#E4F0EC", color: "#2C6B5E", tag: "Awardee", title: "Awardee — Caring Water: Caring the Flows for a Healthier Urban(ized) (Ground)water in Semarang & Yogyakarta", source: "Urban Groundwater Governance & Water Resilience Program", date: "Aug 2024", points: [], outputs: ["pub-3-a", "pub-3-b", "pub-3-c"] },
-  { icon: "book-open", bg: "#FDF2E0", color: "#E8A83C", tag: "Publication", title: "Collaborative Governance for Inclusive Education: LKIS and The Struggle for The Right to Education for Believers of Indigenous Faiths in Yogyakarta", source: "UNNES Political Science Journal (SINTA 5)", date: "Dec 2024", points: ["Published in a SINTA 5 accredited journal"], outputs: ["pub-4-a", "pub-4-b", "pub-4-c"] },
-  { icon: "book-open", bg: "#FDF2E0", color: "#E8A83C", tag: "Publication", title: "Demokrasi di Era Digital: Peran Siparmas Dalam Penguatan Partisipasi Masyarakat Jawa Timur", source: "Komisi Pemilihan Umum Provinsi Jawa Timur", date: "Dec 2024", points: ["Published by KPU Provinsi Jawa Timur"], outputs: ["pub-5-a", "pub-5-b", "pub-5-c"] },
+  { icon: "handshake", bg: "#E4F0EC", color: "#2C6B5E", tag: "Community Engagement", title: "Community Service Implementation Team Member — Seleksi Pamong Kalurahan, Kalurahan Pleret, Bantul", source: "Faculty of Social and Political Sciences, Universitas Gadjah Mada", date: "Feb 2026", points: ["Member of the Community Service Team for the Seleksi Pamong Kalurahan (Village Officials Selection Process) in Kalurahan Pleret, Bantul", "Supported field coordination and stakeholder engagement during local governance selection activities"], outputs: [] },
+  { icon: "flask-conical", bg: "#FBE4DE", color: "#E85D3D", tag: "Research Grant", title: "Research Grantee — Negotiating Women’s Leadership Space in Renewable Energy Practices in Yogyakarta", source: "CitRes-Edu (Citizen Engagement & Natural Resource Governance Education)", date: "Sept 2024", points: ["Research Title: Negotiating Women’s Leadership Space in Renewable Energy Practices in Yogyakarta", "Conducting qualitative field research on community-based renewable energy initiatives and women’s leadership roles", "Developing policy-oriented insights to support inclusive energy transition processes"], outputs: [] },
+  { icon: "droplets", bg: "#E4F0EC", color: "#2C6B5E", tag: "Awardee", title: "Awardee — Caring Water: Caring the Flows for a Healthier Urban(ized) (Ground)water in Semarang & Yogyakarta", source: "Urban Groundwater Governance & Water Resilience Program", date: "Aug 2024", points: ["Selected as awardee in a sustainability-focused initiative addressing urban groundwater governance and water resilience", "Participated in interdisciplinary learning and knowledge exchange on sustainable urban water management"], outputs: [] },
+  { icon: "book-open", bg: "#FDF2E0", color: "#E8A83C", tag: "Publication", title: "Collaborative Governance for Inclusive Education: LKIS and The Struggle for The Right to Education for Believers of Indigenous Faiths in Yogyakarta", source: "UNNES Political Science Journal (SINTA 5)", date: "Dec 2024", points: ["Published in a SINTA 5 accredited journal"], outputs: [] },
+  { icon: "book-open", bg: "#FDF2E0", color: "#E8A83C", tag: "Publication", title: "Demokrasi di Era Digital: Peran Siparmas Dalam Penguatan Partisipasi Masyarakat Jawa Timur", source: "Komisi Pemilihan Umum Provinsi Jawa Timur", date: "Dec 2024", points: ["Published by KPU Provinsi Jawa Timur"], outputs: [] },
 ];
 
 export type ResearchWork = {

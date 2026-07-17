@@ -35,14 +35,16 @@ export default function Footer() {
 
         <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 border-t border-cream/20 pt-[30px]">
           <a
-            href="#"
+            href="https://www.linkedin.com/in/nurulamaliah16/"
+            target="_blank"
             className="inline-flex items-center gap-2 rounded-full bg-cream/10 px-[18px] py-2.5 text-[14px] font-bold text-cream hover:bg-cream/20"
           >
             <Icon name="briefcase" size={16} />
             LinkedIn
           </a>
           <a
-            href="#"
+            href="https://www.instagram.com/nurulaamaliahh"
+            target="_blank"
             className="inline-flex items-center gap-2 rounded-full bg-cream/10 px-[18px] py-2.5 text-[14px] font-bold text-cream hover:bg-cream/20"
           >
             <Icon name="camera" size={16} />

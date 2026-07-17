@@ -1,16 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Icon from "./Icon";
 import Reveal from "./Reveal";
 import Modal from "./Modal";
-import ImageSlot from "./ImageSlot";
 import SectionHeader from "./SectionHeader";
 import { trainings } from "../data";
 
 export default function Education() {
   const [active, setActive] = useState<number | null>(null);
   const t = active !== null ? trainings[active] : null;
+
+  // Shrinking sticky header on scroll (same mechanism as the Experience modal).
+  const [compact, setCompact] = useState(false);
+  const headerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (active === null) {
+      setCompact(false);
+      return;
+    }
+    let scroller: HTMLElement | null = headerRef.current?.parentElement ?? null;
+    while (scroller) {
+      const s = getComputedStyle(scroller);
+      if (s.overflowY === "auto" || s.overflowY === "scroll") break;
+      scroller = scroller.parentElement;
+    }
+    if (!scroller) return;
+
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const s = scroller!;
+        const y = s.scrollTop;
+        setCompact((c) =>
+          c ? y >= 10 : y > 110 && s.scrollHeight - s.clientHeight > 120,
+        );
+      });
+    };
+    onScroll();
+    scroller.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      scroller.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, [active]);
+  const pick = <T,>(big: T, small: T) => (compact ? small : big);
 
   return (
     <section className="px-6 py-16 sm:px-12">
@@ -23,8 +59,8 @@ export default function Education() {
         <Reveal>
           <div className="flex h-full flex-col rounded-3xl bg-green px-8 py-[30px] text-cream">
             <div className="mb-[18px] flex items-center justify-between">
-              <span className="grid h-16 w-16 place-items-center overflow-hidden rounded-[18px] bg-white">
-                <ImageSlot label="Logo" className="h-16 w-16" bg="#fff" />
+              <span className="relative grid h-20 w-20 place-items-center overflow-hidden rounded-[18px]">
+                <Image src="/images/education/ugm/logo.png" alt="UGM" fill className="object-cover" sizes="80px" />
               </span>
               <span className="rounded-full bg-cream/20 px-3 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.4px]">
                 Master&apos;s
@@ -58,11 +94,8 @@ export default function Education() {
             style={{ boxShadow: "0 24px 46px -30px rgba(31,61,56,.4)" }}
           >
             <div className="mb-[18px] flex items-center justify-between">
-              <span
-                className="grid h-16 w-16 place-items-center overflow-hidden rounded-[18px] border border-ink/10 bg-white"
-                style={{ boxShadow: "0 12px 26px -14px rgba(31,61,56,.5)" }}
-              >
-                <ImageSlot label="Logo" className="h-16 w-16" bg="#fff" />
+              <span className="relative grid h-20 w-20 place-items-center">
+                <Image src="/images/education/unnes/logo.png" alt="UNNES" fill className="object-cover" sizes="80px" />
               </span>
               <span className="rounded-full bg-amber-tint px-3 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.4px] text-[#b07d22]">
                 Bachelor&apos;s
@@ -118,7 +151,7 @@ export default function Education() {
                   className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.3px]"
                   style={{ background: tr.bg, color: tr.color }}
                 >
-                  <Icon name="badge-check" size={13} />
+                  <Icon name={tr.certificate ? "badge-check" : "clock"} size={13} />
                   {tr.tag}
                 </span>
               </div>
@@ -133,64 +166,93 @@ export default function Education() {
                   <Icon name="clock" size={13} />
                   {tr.duration}
                 </span>
-                <span
-                  className="ml-auto inline-flex items-center gap-1.5 text-[12.5px] font-bold"
-                  style={{ color: tr.color }}
-                >
-                  View output <Icon name="arrow-up-right" size={14} />
-                </span>
+                {tr.certificate && (
+                  <span
+                    className="ml-auto inline-flex items-center gap-1.5 text-[12.5px] font-bold"
+                    style={{ color: tr.color }}
+                  >
+                    View certificate <Icon name="arrow-up-right" size={14} />
+                  </span>
+                )}
               </div>
             </div>
           </Reveal>
         ))}
       </div>
 
-      <Modal open={t !== null} onClose={() => setActive(null)}>
+      <Modal open={t !== null} onClose={() => setActive(null)} hideClose>
         {t && (
           <>
-            <div className="rounded-t-[26px] px-10 pb-[26px] pt-[34px]" style={{ background: t.bg }}>
-              <div className="mb-4 flex items-center gap-3.5">
-                <span className="grid h-14 w-14 place-items-center rounded-2xl bg-white" style={{ color: t.color }}>
-                  <Icon name={t.icon} size={26} />
-                </span>
+            <div
+              ref={headerRef}
+              className="sticky top-0 z-[5] rounded-t-[26px] px-10 transition-all duration-300 ease-out"
+              style={{ background: t.bg, paddingTop: pick(34, 15), paddingBottom: pick(26, 13) }}
+            >
+              <button
+                onClick={() => setActive(null)}
+                className="absolute right-6 grid h-9 w-9 place-items-center rounded-full bg-white/80 text-ink transition-all duration-300 ease-out"
+                style={{ top: pick(20, 13) }}
+                aria-label="Close"
+              >
+                <Icon name="x" size={16} />
+              </button>
+              <div className="flex items-center transition-all duration-300 ease-out" style={{ gap: pick(14, 12) }}>
                 <span
-                  className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.3px]"
-                  style={{ color: t.color }}
+                  className="grid flex-none place-items-center bg-white transition-all duration-300 ease-out"
+                  style={{ width: pick(56, 38), height: pick(56, 38), borderRadius: pick(16, 11), color: t.color }}
                 >
-                  <Icon name="badge-check" size={13} />
-                  {t.tag}
+                  <Icon name={t.icon} size={pick(26, 20)} />
                 </span>
+                <div className="min-w-0 flex-1 pr-12">
+                  <div className="font-fred font-semibold leading-[1.2] text-ink transition-all duration-300 ease-out" style={{ fontSize: pick(23, 16) }}>
+                    {t.title}
+                  </div>
+                  <div className="font-bold text-[#5c6b66] transition-all duration-300 ease-out" style={{ fontSize: pick(14, 12.5), marginTop: pick(4, 1) }}>
+                    {t.org}
+                  </div>
+                </div>
               </div>
-              <div className="font-fred text-[27px] font-semibold leading-[1.15] text-ink">{t.title}</div>
-              <div className="mt-2 text-[14px] font-bold text-[#5c6b66]">{t.org}</div>
-              <div className="mt-3.5 flex flex-wrap items-center gap-2.5">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[13px] font-bold text-[#5c6b66]">
-                  <Icon name="calendar" size={13} />
-                  {t.year}
-                </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[13px] font-bold text-[#5c6b66]">
-                  <Icon name="clock" size={13} />
-                  {t.duration}
-                </span>
+              <div className="transition-all duration-300 ease-out" style={{ opacity: compact ? 0 : 1, maxHeight: pick(70, 0), overflow: "hidden", marginTop: pick(14, 0) }}>
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <span
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.3px]"
+                    style={{ color: t.color }}
+                  >
+                    <Icon name={t.certificate ? "badge-check" : "clock"} size={13} />
+                    {t.tag}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[13px] font-bold text-[#5c6b66]">
+                    <Icon name="calendar" size={13} />
+                    {t.year}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[13px] font-bold text-[#5c6b66]">
+                    <Icon name="clock" size={13} />
+                    {t.duration}
+                  </span>
+                </div>
               </div>
             </div>
             <div className="px-10 pb-9 pt-7">
               <div className="mb-3 text-[13px] font-extrabold uppercase tracking-[0.5px] text-coral">
                 About the training
               </div>
-              <p className="m-0 mb-[30px] text-[15px] leading-[1.6] text-[#43544f]">{t.desc}</p>
-              <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2.5">
-                <div className="text-[13px] font-extrabold uppercase tracking-[0.5px] text-green">
-                  Certificate &amp; output
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-3.5">
-                {t.outputs.map((o) => (
-                  <div key={o} className="overflow-hidden rounded-2xl border border-ink/10 bg-white">
-                    <ImageSlot label="PDF / image" className="aspect-[3/4] w-full" />
+              <p className="m-0 text-[15px] leading-[1.6] text-[#43544f]">{t.desc}</p>
+              {t.certificate && (
+                <>
+                  <div className="mb-2.5 mt-[30px] text-[13px] font-extrabold uppercase tracking-[0.5px] text-green">
+                    Certificate
                   </div>
-                ))}
-              </div>
+                  <div className="overflow-hidden rounded-2xl border border-ink/10 bg-white">
+                    <Image
+                      src={t.certificate}
+                      alt={`${t.title} certificate`}
+                      width={2000}
+                      height={1414}
+                      className="h-auto w-full"
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </>
         )}

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Icon from "./Icon";
 import Reveal from "./Reveal";
-import ImageSlot from "./ImageSlot";
 import SectionHeader from "./SectionHeader";
 import { research, researchWorks } from "../data";
 
@@ -68,7 +67,7 @@ export default function Research() {
                       {pub.points.length > 0 && (
                         <>
                           <div className="mb-2.5 text-[12px] font-extrabold uppercase tracking-[0.4px] text-green">
-                            Key output
+                            Highlights
                           </div>
                           <div className="mb-[22px] flex flex-col gap-2.5">
                             {pub.points.map((pt) => (
@@ -83,17 +82,7 @@ export default function Research() {
                           </div>
                         </>
                       )}
-                      <div className="mb-3 text-[12px] font-extrabold uppercase tracking-[0.4px] text-coral">
-                        Media &amp; documentation{" "}
-                        <span className="font-semibold normal-case text-[#9aa39e]">(optional)</span>
-                      </div>
-                      <div className="grid grid-cols-3 gap-3">
-                        {pub.outputs.map((o) => (
-                          <div key={o} className="overflow-hidden rounded-[14px] border border-ink/10 bg-cream">
-                            <ImageSlot label="PDF / image" className="aspect-[4/3] w-full" />
-                          </div>
-                        ))}
-                      </div>
+                      {/* ponytail: media hidden — no real assets yet, restore when outputs have images */}
                     </div>
                   </motion.div>
                 )}

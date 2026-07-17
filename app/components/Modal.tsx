@@ -7,10 +7,12 @@ import Icon from "./Icon";
 export default function Modal({
   open,
   onClose,
+  hideClose,
   children,
 }: {
   open: boolean;
   onClose: () => void;
+  hideClose?: boolean;
   children: React.ReactNode;
 }) {
   useEffect(() => {
@@ -45,6 +47,7 @@ export default function Modal({
             exit={{ opacity: 0, scale: 0.96, y: 12 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
           >
+            {!hideClose && (
             <button
               onClick={onClose}
               aria-label="Close"
@@ -53,6 +56,7 @@ export default function Modal({
             >
               <Icon name="x" size={18} />
             </button>
+            )}
             {children}
           </motion.div>
         </motion.div>

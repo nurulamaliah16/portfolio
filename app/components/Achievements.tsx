@@ -1,6 +1,5 @@
 import Icon from "./Icon";
 import Reveal from "./Reveal";
-import ImageSlot from "./ImageSlot";
 import { achievements } from "../data";
 
 export default function Achievements() {
@@ -19,30 +18,31 @@ export default function Achievements() {
         {achievements.map((a, i) => (
           <Reveal key={a.id} delay={i * 0.06}>
             <div
-              className="flex h-full flex-col overflow-hidden rounded-[20px] border border-ink/5 bg-white"
+              className="flex h-full flex-col rounded-[20px] border border-ink/5 bg-white p-[18px]"
               style={{ boxShadow: "0 22px 44px -32px rgba(31,61,56,.42)" }}
             >
-              <div className="relative" style={{ background: a.bg }}>
-                <ImageSlot label="Photo (optional)" className="aspect-[4/3] w-full" bg={a.bg} />
+              <div className="flex items-start justify-between">
                 <span
-                  className="absolute left-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-1.5 text-[11px] font-extrabold"
-                  style={{ color: a.color }}
+                  className="grid h-12 w-12 flex-none place-items-center rounded-[14px]"
+                  style={{ background: a.bg, color: a.color }}
                 >
-                  <Icon name={a.icon} size={13} />
-                  {a.rank}
+                  <Icon name={a.icon} size={22} />
                 </span>
-                <span className="absolute right-2.5 top-2.5 rounded-full bg-ink/80 px-2.5 py-1.5 text-[11px] font-extrabold text-white">
+                <span className="rounded-full bg-ink/80 px-2.5 py-1.5 text-[11px] font-extrabold text-white">
                   {a.year}
                 </span>
               </div>
-              <div className="flex flex-1 flex-col px-[18px] pb-[18px] pt-4">
-                <div className="font-fred text-[17px] font-semibold leading-[1.28]">{a.title}</div>
-                <div className="mt-auto flex items-center gap-2.5 pt-3.5">
-                  <span className="grid h-[30px] w-[30px] flex-none place-items-center overflow-hidden rounded-full border border-ink/10 bg-cream">
-                    <ImageSlot label="" className="h-[30px] w-[30px]" bg="#fff" />
-                  </span>
-                  <span className="text-[12px] font-bold leading-[1.25] text-muted">{a.org}</span>
-                </div>
+              <span
+                className="mt-4 inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-extrabold"
+                style={{ background: a.bg, color: a.color }}
+              >
+                {a.rank}
+              </span>
+              <div className="font-fred mt-2.5 text-[17px] font-semibold leading-[1.28]">
+                {a.title}
+              </div>
+              <div className="mt-auto pt-3.5 text-[12px] font-bold leading-[1.25] text-muted">
+                {a.org}
               </div>
             </div>
           </Reveal>
