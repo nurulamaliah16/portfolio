@@ -1,10 +1,16 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
-import Image from "next/image";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Img from "./Img";
 import Icon from "./Icon";
 import { EMAIL } from "../data";
+
+gsap.registerPlugin(ScrollTrigger);
+
+// useLayoutEffect flashes a warning during SSR; fall back to useEffect on server.
+const useIso = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const chips = [
   { icon: "scale", label: "Governance Research", bg: "#E4F0EC", color: "#2C6B5E" },
@@ -13,7 +19,48 @@ const chips = [
 ] as const;
 
 export default function Hero() {
+  const rootRef = useRef<HTMLElement>(null);
   const blobRef = useRef<HTMLDivElement>(null);
+
+  // gsap: entrance timeline (once) + scroll parallax, both reduced-motion aware
+  useIso(() => {
+    const root = rootRef.current;
+    if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      const ease = "power3.out";
+      gsap.set(
+        "[data-hero]",
+        { opacity: 0, y: 20 },
+      );
+      gsap.set("[data-hero='portrait']", { scale: 0.94, y: 0 });
+      gsap.set("[data-blob]", { scale: 0.8, opacity: 0 });
+
+      const tl = gsap.timeline({ defaults: { ease, duration: 0.7 } });
+      tl.to("[data-blob]", { scale: 1, opacity: 1, duration: 0.9, stagger: 0.12 }, 0)
+        .to("[data-hero='portrait']", { opacity: 1, scale: 1, duration: 0.9 }, 0.1)
+        .to("[data-hero='title']", { opacity: 1, y: 0 }, 0.15)
+        .to("[data-hero='intro']", { opacity: 1, y: 0 }, 0.3)
+        .to("[data-hero='email']", { opacity: 1, y: 0 }, 0.42)
+        .to("[data-chip]", { opacity: 1, y: 0, stagger: 0.09, duration: 0.5 }, 0.5)
+        .to("[data-hero='cta']", { opacity: 1, y: 0 }, 0.62)
+        .to("[data-hero='badge']", { opacity: 1, y: 0 }, 0.7);
+
+      // scroll parallax: portrait drifts up, badge down, for depth
+      gsap.to("[data-parallax='portrait']", {
+        yPercent: -12,
+        ease: "none",
+        scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: true },
+      });
+      gsap.to("[data-parallax='badge']", {
+        yPercent: 18,
+        ease: "none",
+        scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: true },
+      });
+    }, root);
+
+    return () => ctx.revert();
+  }, []);
 
   // gsap: gentle parallax drift of the hero blobs following the cursor
   useEffect(() => {
@@ -34,11 +81,15 @@ export default function Hero() {
 
   return (
     <header
+      ref={rootRef}
       id="home"
       className="grid grid-cols-1 items-center gap-5 px-6 pb-5 pt-8 sm:px-12 lg:grid-cols-[1.05fr_1fr]"
     >
       <div>
-        <h1 className="font-fred mb-6 text-[46px] font-semibold leading-[1.02] tracking-[-1px] sm:text-[72px]">
+        <h1
+          data-hero="title"
+          className="font-fred mb-6 text-[46px] font-semibold leading-[1.02] tracking-[-1px] sm:text-[72px]"
+        >
           <span className="sr-only">Nurul Amaliah — </span>
           <span aria-hidden="true">
             Hey There,
@@ -46,12 +97,13 @@ export default function Hero() {
             I&apos;m <span className="text-green">Ama</span>
           </span>
         </h1>
-        <p className="mb-6 max-w-[440px] text-[17px] leading-[1.6] text-[#43544f]">
+        <p data-hero="intro" className="mb-6 max-w-[440px] text-[17px] leading-[1.6] text-[#43544f]">
           Political Science graduate &amp; Master&apos;s student in Politics and Government, working
           at the intersection of governance research, digital storytelling, and social media
           strategy.
         </p>
         <a
+          data-hero="email"
           href={`mailto:${EMAIL}`}
           className="mb-[30px] inline-flex items-center gap-2.5 text-[16px] font-bold text-coral hover:text-[#c8492d]"
         >
@@ -62,6 +114,7 @@ export default function Hero() {
           {chips.map((c) => (
             <span
               key={c.label}
+              data-chip
               className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-[14px] font-bold"
               style={{ background: c.bg, color: c.color }}
             >
@@ -70,7 +123,7 @@ export default function Hero() {
             </span>
           ))}
         </div>
-        <div className="flex flex-wrap items-center gap-4">
+        <div data-hero="cta" className="flex flex-wrap items-center gap-4">
           <a
             href="#portfolio"
             className="inline-flex items-center gap-2.5 rounded-full bg-green px-[26px] py-3.5 text-[16px] font-bold text-cream transition-transform hover:-translate-y-0.5"
@@ -93,8 +146,12 @@ export default function Hero() {
           data-blob
           className="blob-b absolute left-[calc(50%+80px)] top-[70px] h-[120px] w-[120px] rotate-[10deg] bg-amber opacity-75 sm:left-[calc(50%+110px)] lg:left-auto lg:right-3"
         />
-        <div className="relative z-[1] h-[380px] w-[280px] overflow-hidden rounded-[36px] sm:w-[340px]">
-          <Image
+        <div
+          data-hero="portrait"
+          data-parallax="portrait"
+          className="relative z-[1] h-[380px] w-[280px] overflow-hidden rounded-[36px] sm:w-[340px]"
+        >
+          <Img
             src="/images/gf.png"
             alt="Portrait of Ama"
             fill
@@ -104,6 +161,8 @@ export default function Hero() {
           />
         </div>
         <div
+          data-hero="badge"
+          data-parallax="badge"
           className="absolute bottom-4 left-[-6px] z-[2] max-w-[220px] rounded-2xl bg-white p-3.5"
           style={{ boxShadow: "0 18px 34px -18px rgba(31,61,56,.45)" }}
         >

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import Img from "./Img";
 import { AnimatePresence, motion } from "framer-motion";
 import Icon from "./Icon";
 import Reveal from "./Reveal";
@@ -174,7 +175,7 @@ export default function Experience() {
                   onClick={() => setGalleryIdx(gi)}
                   className="relative aspect-square overflow-hidden rounded-2xl border border-ink/10 bg-white"
                 >
-                  <Image
+                  <Img
                     src={g}
                     alt={`${job.role} at ${job.org} — activity ${gi + 1}`}
                     fill
@@ -219,7 +220,7 @@ export default function Experience() {
               <Icon name="arrow-right" size={24} />
             </button>
             <div className="relative flex h-full max-h-[85vh] w-full max-w-5xl items-center justify-center" onClick={(e) => e.stopPropagation()}>
-              <Image
+              <Img
                 src={galleryImage}
                 alt=""
                 fill

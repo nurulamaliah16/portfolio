@@ -31,6 +31,31 @@ body {
   color: var(--color-cream);
 }
 
+/* skeleton shimmer for images while loading */
+.skeleton {
+  background: linear-gradient(
+    100deg,
+    #ece7dc 30%,
+    #f6f2e9 50%,
+    #ece7dc 70%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}
+
 /* organic blob shapes from the source design */
 .blob-a {
   border-radius: 63% 37% 54% 46% / 58% 52% 48% 42%;

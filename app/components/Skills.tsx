@@ -1,15 +1,14 @@
 import Icon from "./Icon";
 import Reveal from "./Reveal";
+import Marquee from "./Marquee";
+import SectionHeader from "./SectionHeader";
 import { expertise, tools } from "../data";
 
 export default function Skills() {
   return (
     <section id="skills" className="px-6 py-16 sm:px-12">
       <div className="mb-[22px]">
-        <div className="mb-1.5 text-[15px] font-bold text-coral">Toolkit</div>
-        <h2 className="font-fred m-0 text-[34px] font-semibold tracking-[-0.5px] sm:text-[44px]">
-          Skills &amp; Tools
-        </h2>
+        <SectionHeader eyebrow="Toolkit" title="Skills & Tools" />
       </div>
       <Reveal>
         <div
@@ -35,19 +34,21 @@ export default function Skills() {
 
           <div className="my-[22px] h-px bg-ink/10" />
 
-          <div className="mb-3.5 flex flex-col items-start gap-2.5 sm:flex-row sm:flex-wrap sm:items-center">
-            <span className="mr-1 text-[12px] font-extrabold uppercase tracking-[0.5px] text-coral">Tools</span>
-            <div className="flex flex-wrap gap-2.5 sm:contents">
+          <div className="mb-3.5 flex flex-col items-start gap-2.5 sm:flex-row sm:items-center">
+            <span className="mr-1 flex-none text-[12px] font-extrabold uppercase tracking-[0.5px] text-coral">
+              Tools
+            </span>
+            <Marquee speed={22} className="w-full sm:flex-1">
               {tools.map((t) => (
                 <span
                   key={t.name}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-amber-tint px-3 py-[7px] text-[12.5px] font-bold text-[#b07d22]"
+                  className="inline-flex flex-none items-center gap-1.5 whitespace-nowrap rounded-full bg-amber-tint px-3 py-[7px] text-[12.5px] font-bold text-[#b07d22]"
                 >
                   <Icon name={t.icon} size={14} />
                   {t.name}
                 </span>
               ))}
-            </div>
+            </Marquee>
           </div>
 
           <div className="flex flex-col items-start gap-2.5 sm:flex-row sm:flex-wrap sm:items-center">

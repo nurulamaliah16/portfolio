@@ -1,18 +1,17 @@
 import Icon from "./Icon";
 import Reveal from "./Reveal";
+import SectionHeader from "./SectionHeader";
 import { achievements } from "../data";
 
 export default function Achievements() {
   return (
     <section id="achievements" className="px-6 py-16 sm:px-12">
       <div className="mb-[30px]">
-        <div className="mb-1.5 text-[15px] font-bold text-coral">Recognition</div>
-        <h2 className="font-fred m-0 mb-1.5 text-[34px] font-semibold tracking-[-0.5px] sm:text-[44px]">
-          Achievements
-        </h2>
-        <p className="m-0 text-[16px] text-muted">
-          Recognition across advocacy, public speaking, and leadership.
-        </p>
+        <SectionHeader
+          eyebrow="Recognition"
+          title="Achievements"
+          sub="Recognition across advocacy, public speaking, and leadership."
+        />
       </div>
       <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 lg:grid-cols-3">
         {achievements.map((a, i) => (

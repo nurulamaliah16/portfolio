@@ -1,5 +1,6 @@
 import Icon from "./Icon";
 import Reveal from "./Reveal";
+import SectionHeader from "./SectionHeader";
 
 const services = [
   { icon: "scale", bg: "#2C6B5E", title: "Political Analysis & Policy Research", sub: "Governance & policy gaps" },
@@ -34,17 +35,16 @@ export default function About() {
           </Reveal>
         ))}
       </div>
-      <Reveal>
-        <div className="mb-1.5 text-[15px] font-bold text-coral">About</div>
-        <h2 className="font-fred m-0 mb-[18px] text-[34px] font-semibold tracking-[-0.5px] sm:text-[44px]">
-          What do I help with?
-        </h2>
-        <p className="max-w-[460px] text-[17px] leading-[1.7] text-[#43544f]">
-          I help bring research-based insight and creative storytelling together — whether it&apos;s
-          analyzing governance and policy gaps, building social media strategy for advocacy
-          campaigns, or producing engaging short-form video content.
-        </p>
-      </Reveal>
+      <div>
+        <SectionHeader eyebrow="About" title="What do I help with?" />
+        <Reveal>
+          <p className="mt-[18px] max-w-[460px] text-[17px] leading-[1.7] text-[#43544f]">
+            I help bring research-based insight and creative storytelling together — whether
+            it&apos;s analyzing governance and policy gaps, building social media strategy for
+            advocacy campaigns, or producing engaging short-form video content.
+          </p>
+        </Reveal>
+      </div>
     </section>
   );
 }

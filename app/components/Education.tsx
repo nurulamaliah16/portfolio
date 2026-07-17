@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Img from "./Img";
 import Icon from "./Icon";
 import Reveal from "./Reveal";
 import DetailModal from "./DetailModal";
@@ -184,8 +185,8 @@ export default function Education() {
                 <div className="mb-2.5 mt-[30px] text-[13px] font-extrabold uppercase tracking-[0.5px] text-green">
                   Certificate
                 </div>
-                <div className="overflow-hidden rounded-2xl border border-ink/10 bg-white">
-                  <Image
+                <div className="relative overflow-hidden rounded-2xl border border-ink/10 bg-white">
+                  <Img
                     src={t.certificate}
                     alt={`${t.title} certificate`}
                     width={2000}
