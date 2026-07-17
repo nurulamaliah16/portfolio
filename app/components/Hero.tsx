@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import Image from "next/image";
 import Icon from "./Icon";
-import ImageSlot from "./ImageSlot";
 import { EMAIL } from "../data";
 
 const chips = [
@@ -35,7 +35,7 @@ export default function Hero() {
   return (
     <header
       id="home"
-      className="grid grid-cols-1 items-center gap-5 px-6 pb-5 pt-8 sm:px-12 md:grid-cols-[1.05fr_1fr]"
+      className="grid grid-cols-1 items-center gap-5 px-6 pb-5 pt-8 sm:px-12 lg:grid-cols-[1.05fr_1fr]"
     >
       <div>
         <h1 className="font-fred mb-6 text-[46px] font-semibold leading-[1.02] tracking-[-1px] sm:text-[72px]">
@@ -88,10 +88,17 @@ export default function Hero() {
         />
         <div
           data-blob
-          className="blob-b absolute right-3 top-[70px] h-[120px] w-[120px] rotate-[10deg] bg-amber opacity-75"
+          className="blob-b absolute left-[calc(50%+80px)] top-[70px] h-[120px] w-[120px] rotate-[10deg] bg-amber opacity-75 sm:left-[calc(50%+110px)] lg:left-auto lg:right-3"
         />
         <div className="relative z-[1] h-[380px] w-[280px] overflow-hidden rounded-[36px] sm:w-[340px]">
-          <ImageSlot label="Portrait of Ama" className="h-full w-full" bg="rgba(253,250,243,.5)" />
+          <Image
+            src="/images/gf.png"
+            alt="Portrait of Ama"
+            fill
+            className="object-cover object-[50%_30%]"
+            sizes="(max-width: 640px) 380px, 460px"
+            priority
+          />
         </div>
         <div
           className="absolute bottom-4 left-[-6px] z-[2] max-w-[220px] rounded-2xl bg-white p-3.5"

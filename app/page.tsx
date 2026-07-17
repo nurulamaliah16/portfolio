@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <main className="px-3 sm:px-4">
       <div
-        className="relative mx-auto my-6 max-w-[1200px] overflow-hidden rounded-[30px] bg-cream sm:my-9"
+        className="relative mx-auto my-6 max-w-[1200px] overflow-clip rounded-[30px] bg-cream pt-4 sm:my-9"
         style={{ boxShadow: "0 40px 80px -30px rgba(31,61,56,.45)" }}
       >
         <Nav />
