@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Fredoka, Nunito_Sans, Caveat } from "next/font/google";
 import "./globals.css";
 import { SITE_URL, SAME_AS, EMAIL, research, researchWorks } from "./data";
+import { MotionProvider } from "./lib/motion";
+import { computeServerAnimate } from "./lib/ua";
 
 const fredoka = Fredoka({
   subsets: ["latin"],
@@ -88,9 +91,16 @@ const jsonLd = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const h = await headers();
+  const dm = h.get("sec-ch-device-memory");
+  const animate = computeServerAnimate({
+    ua: h.get("user-agent"),
+    deviceMemory: dm ? Number(dm) : undefined,
+    prefersReducedMotion: h.get("sec-ch-prefers-reduced-motion") === "reduce",
+  });
   return (
     <html lang="en" className={`${fredoka.variable} ${nunito.variable} ${caveat.variable}`}>
       <body className="font-body text-ink antialiased">
@@ -98,7 +108,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
+        <MotionProvider value={animate}>{children}</MotionProvider>
       </body>
     </html>
   );

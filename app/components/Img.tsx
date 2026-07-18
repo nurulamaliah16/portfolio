@@ -2,6 +2,7 @@
 
 import Image, { type ImageProps } from "next/image";
 import { useState } from "react";
+import { useAnimations } from "../lib/motion";
 
 /**
  * next/image + skeleton shimmer. Shows an animated placeholder until the image
@@ -10,9 +11,11 @@ import { useState } from "react";
  */
 export default function Img({ className, onLoad, ...props }: ImageProps) {
   const [loaded, setLoaded] = useState(false);
+  // Old browsers: onLoad state may never fire (dead hydration) — show immediately.
+  const show = loaded || !useAnimations();
   return (
     <>
-      {!loaded && (
+      {!show && (
         <span className="skeleton pointer-events-none absolute inset-0 z-0" aria-hidden />
       )}
       {/* eslint-disable-next-line jsx-a11y/alt-text -- alt passed through ...props */}
@@ -22,7 +25,7 @@ export default function Img({ className, onLoad, ...props }: ImageProps) {
           setLoaded(true);
           onLoad?.(e);
         }}
-        className={`transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"} ${className ?? ""}`}
+        className={`transition-opacity duration-500 ${show ? "opacity-100" : "opacity-0"} ${className ?? ""}`}
       />
     </>
   );

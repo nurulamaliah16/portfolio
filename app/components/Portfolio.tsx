@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Icon from "./Icon";
 import SectionHeader from "./SectionHeader";
 import { works, type Work } from "../data";
+import { useAnimations, useMotionSupported } from "../lib/motion";
 
 const filters = [
   { key: "all", label: "All", accent: "#1F3D38" },
@@ -21,6 +22,8 @@ declare global {
 export default function Portfolio() {
   const [filter, setFilter] = useState<"all" | "Post" | "Reel">("all");
   const [showAll, setShowAll] = useState(false);
+  const supported = useMotionSupported();
+  const enabled = useAnimations();
 
   const filtered = filter === "all" ? works : works.filter((w) => w.format === filter);
   const visible = showAll ? filtered : filtered.slice(0, 6);
@@ -75,20 +78,25 @@ export default function Portfolio() {
       </p>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <AnimatePresence mode="popLayout">
-          {visible.map((item) => (
-            <motion.div
-              key={item.id}
-              layout
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.3 }}
-            >
-              <IgEmbed item={item} />
-            </motion.div>
-          ))}
-        </AnimatePresence>
+        {!supported ? (
+          visible.map((item) => <IgEmbed key={item.id} item={item} />)
+        ) : (
+          // Stable motion element (no embed remount when `enabled` flips off).
+          <AnimatePresence mode="popLayout">
+            {visible.map((item) => (
+              <motion.div
+                key={item.id}
+                layout={enabled}
+                initial={enabled ? { opacity: 0, scale: 0.95 } : false}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={enabled ? { opacity: 0, scale: 0.95 } : { opacity: 1 }}
+                transition={enabled ? { duration: 0.3 } : { duration: 0 }}
+              >
+                <IgEmbed item={item} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        )}
       </div>
 
       {filtered.length > 6 && (

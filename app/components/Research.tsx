@@ -6,9 +6,12 @@ import Icon from "./Icon";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
 import { research, researchWorks } from "../data";
+import { useAnimations, useMotionSupported } from "../lib/motion";
 
 export default function Research() {
   const [open, setOpen] = useState<number | null>(null);
+  const supported = useMotionSupported();
+  const enabled = useAnimations();
 
   return (
     <section id="research" className="px-6 py-16 sm:px-12">
@@ -55,40 +58,23 @@ export default function Research() {
                   <div className="font-fred text-[15.5px] font-semibold leading-[1.45] sm:text-[16.5px] sm:leading-[1.3]">{pub.title}</div>
                 </div>
               </div>
-              <AnimatePresence initial={false}>
-                {isOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <div className="pb-[22px] pl-4 pr-4 pt-1 sm:pl-[78px] sm:pr-[22px]">
-                      <div className="mb-3.5 text-[13.5px] font-bold text-green">{pub.source}</div>
-                      {pub.points.length > 0 && (
-                        <>
-                          <div className="mb-2.5 text-[12px] font-extrabold uppercase tracking-[0.4px] text-green">
-                            Highlights
-                          </div>
-                          <div className="mb-[22px] flex flex-col gap-2.5">
-                            {pub.points.map((pt) => (
-                              <div key={pt} className="flex items-start gap-3">
-                                <span
-                                  className="mt-[7px] h-[7px] w-[7px] flex-none rounded-full"
-                                  style={{ background: pub.color }}
-                                />
-                                <span className="flex-1 text-[14px] leading-[1.55] text-[#43544f]">{pt}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </>
-                      )}
-                      {/* ponytail: media hidden — no real assets yet, restore when outputs have images */}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {!supported ? (
+                isOpen && <ResearchPanel pub={pub} />
+              ) : (
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={enabled ? { height: 0, opacity: 0 } : false}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={enabled ? { height: 0, opacity: 0 } : { opacity: 1 }}
+                      transition={enabled ? { duration: 0.3, ease: [0.22, 1, 0.36, 1] } : { duration: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <ResearchPanel pub={pub} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              )}
             </div>
           );
         })}
@@ -137,5 +123,32 @@ export default function Research() {
         </div>
       </div>
     </section>
+  );
+}
+
+function ResearchPanel({ pub }: { pub: (typeof research)[number] }) {
+  return (
+    <div className="pb-[22px] pl-4 pr-4 pt-1 sm:pl-[78px] sm:pr-[22px]">
+      <div className="mb-3.5 text-[13.5px] font-bold text-green">{pub.source}</div>
+      {pub.points.length > 0 && (
+        <>
+          <div className="mb-2.5 text-[12px] font-extrabold uppercase tracking-[0.4px] text-green">
+            Highlights
+          </div>
+          <div className="mb-[22px] flex flex-col gap-2.5">
+            {pub.points.map((pt) => (
+              <div key={pt} className="flex items-start gap-3">
+                <span
+                  className="mt-[7px] h-[7px] w-[7px] flex-none rounded-full"
+                  style={{ background: pub.color }}
+                />
+                <span className="flex-1 text-[14px] leading-[1.55] text-[#43544f]">{pt}</span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+      {/* ponytail: media hidden — no real assets yet, restore when outputs have images */}
+    </div>
   );
 }

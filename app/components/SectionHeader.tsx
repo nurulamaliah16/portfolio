@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { useAnimations } from "../lib/motion";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -20,10 +21,11 @@ export default function SectionHeader({
   sub?: string;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
+  const animate = useAnimations();
 
   useIso(() => {
     const root = rootRef.current;
-    if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!root || !animate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let cancelled = false;
     let split: SplitText | undefined;
@@ -63,7 +65,7 @@ export default function SectionHeader({
       split?.revert();
       ctx.revert();
     };
-  }, []);
+  }, [animate]);
 
   return (
     <div ref={rootRef}>

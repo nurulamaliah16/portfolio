@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Icon from "./Icon";
+import { useAnimations, useMotionSupported } from "../lib/motion";
+
+const menuClass =
+  "absolute left-0 right-0 top-[72px] z-50 mx-4 flex flex-col gap-1 rounded-2xl bg-cream p-3 shadow-xl lg:hidden";
 
 const links = [
   ["Home", "#home"],
@@ -16,6 +20,19 @@ const links = [
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const supported = useMotionSupported();
+  const enabled = useAnimations();
+
+  const menuLinks = links.map(([label, href]) => (
+    <a
+      key={href}
+      href={href}
+      onClick={() => setOpen(false)}
+      className="rounded-xl px-4 py-2.5 text-[15px] font-semibold text-ink hover:bg-green-tint"
+    >
+      {label}
+    </a>
+  ));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -44,28 +61,23 @@ export default function Nav() {
       >
         <Icon name={open ? "x" : "menu"} size={22} />
       </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute left-0 right-0 top-[72px] z-50 mx-4 flex flex-col gap-1 rounded-2xl bg-cream p-3 shadow-xl lg:hidden"
-          >
-            {links.map(([label, href]) => (
-              <a
-                key={href}
-                href={href}
-                onClick={() => setOpen(false)}
-                className="rounded-xl px-4 py-2.5 text-[15px] font-semibold text-ink hover:bg-green-tint"
-              >
-                {label}
-              </a>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {!supported ? (
+        open && <div className={menuClass}>{menuLinks}</div>
+      ) : (
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={enabled ? { opacity: 0, y: -12 } : false}
+              animate={{ opacity: 1, y: 0 }}
+              exit={enabled ? { opacity: 0, y: -12 } : { opacity: 1 }}
+              transition={enabled ? { duration: 0.2, ease: "easeOut" } : { duration: 0 }}
+              className={menuClass}
+            >
+              {menuLinks}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
     </nav>
   );
 }

@@ -10,10 +10,13 @@ import DetailModal from "./DetailModal";
 import SectionHeader from "./SectionHeader";
 import { experience } from "../data";
 import { useIndexModal } from "../lib/useIndexModal";
+import { useAnimations, useMotionSupported } from "../lib/motion";
 
 export default function Experience() {
   const { item: job, open, close } = useIndexModal(experience);
   const [galleryIdx, setGalleryIdx] = useState<number | null>(null);
+  const supported = useMotionSupported();
+  const enabled = useAnimations();
 
   const closeGallery = useCallback(() => setGalleryIdx(null), []);
   const prev = useCallback(() => {
@@ -189,15 +192,9 @@ export default function Experience() {
         )}
       </DetailModal>
 
-      <AnimatePresence>
-        {galleryImage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"
-            onClick={closeGallery}
-          >
+      {(() => {
+        const inner = galleryImage && (
+          <>
             <button
               onClick={closeGallery}
               className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/20 text-white hover:bg-white/30"
@@ -233,9 +230,30 @@ export default function Experience() {
                 {galleryIdx! + 1} / {job.gallery.length}
               </div>
             )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </>
+        );
+        const cls = "fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4";
+        if (!supported) {
+          return galleryImage && (
+            <div className={cls} onClick={closeGallery}>{inner}</div>
+          );
+        }
+        return (
+          <AnimatePresence>
+            {galleryImage && (
+              <motion.div
+                initial={enabled ? { opacity: 0 } : false}
+                animate={{ opacity: 1 }}
+                exit={enabled ? { opacity: 0 } : { opacity: 1 }}
+                className={cls}
+                onClick={closeGallery}
+              >
+                {inner}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        );
+      })()}
     </section>
   );
 }

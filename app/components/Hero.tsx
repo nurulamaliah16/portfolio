@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Img from "./Img";
 import Icon from "./Icon";
 import { EMAIL } from "../data";
+import { useAnimations } from "../lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,11 +22,12 @@ const chips = [
 export default function Hero() {
   const rootRef = useRef<HTMLElement>(null);
   const blobRef = useRef<HTMLDivElement>(null);
+  const animate = useAnimations();
 
   // gsap: entrance timeline (once) + scroll parallax, both reduced-motion aware
   useIso(() => {
     const root = rootRef.current;
-    if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!root || !animate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const ctx = gsap.context(() => {
       const ease = "power3.out";
@@ -60,12 +62,12 @@ export default function Hero() {
     }, root);
 
     return () => ctx.revert();
-  }, []);
+  }, [animate]);
 
   // gsap: gentle parallax drift of the hero blobs following the cursor
   useEffect(() => {
     const el = blobRef.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || !animate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const blobs = el.querySelectorAll<HTMLElement>("[data-blob]");
     const onMove = (e: MouseEvent) => {
       const cx = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -77,7 +79,7 @@ export default function Hero() {
     };
     window.addEventListener("mousemove", onMove);
     return () => window.removeEventListener("mousemove", onMove);
-  }, []);
+  }, [animate]);
 
   return (
     <header

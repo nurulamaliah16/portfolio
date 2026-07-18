@@ -2,6 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { useAnimations } from "../lib/motion";
 
 // useLayoutEffect warns during SSR; fall back to useEffect on server.
 const useIso = typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -18,10 +19,11 @@ export default function Marquee({
   const trackRef = useRef<HTMLDivElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
   const [reduced, setReduced] = useState(false);
+  const animate = useAnimations();
 
   useIso(() => {
     const track = trackRef.current;
-    if (!track) return;
+    if (!track || !animate) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setReduced(true);
       return;
@@ -39,10 +41,10 @@ export default function Marquee({
     }, track);
 
     return () => ctx.revert();
-  }, [speed]);
+  }, [speed, animate]);
 
-  // Static wrap fallback for reduced-motion.
-  if (reduced) {
+  // Static wrap fallback for reduced-motion / unsupported browsers.
+  if (reduced || !animate) {
     return <div className={`flex flex-wrap gap-2.5 ${className ?? ""}`}>{children}</div>;
   }
 
