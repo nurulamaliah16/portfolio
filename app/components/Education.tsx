@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Img from "./Img";
 import Icon from "./Icon";
@@ -11,6 +12,26 @@ import { useIndexModal } from "../lib/useIndexModal";
 
 export default function Education() {
   const { item: t, open, close } = useIndexModal(trainings);
+  const [zoom, setZoom] = useState(false);
+
+  // Close the fullscreen certificate on Escape (capture, so it beats the modal's
+  // own Escape handler — you back out of the image first, not the whole modal).
+  useEffect(() => {
+    if (!zoom) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        setZoom(false);
+      }
+    };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, [zoom]);
+
+  // Drop the zoom when the modal closes, so reopening never starts fullscreen.
+  useEffect(() => {
+    if (!t) setZoom(false);
+  }, [t]);
 
   return (
     <section id="education" className="px-6 py-16 sm:px-12">
@@ -185,7 +206,12 @@ export default function Education() {
                 <div className="mb-2.5 mt-[30px] text-[13px] font-extrabold uppercase tracking-[0.5px] text-green">
                   Certificate
                 </div>
-                <div className="relative overflow-hidden rounded-2xl border border-ink/10 bg-white">
+                <button
+                  type="button"
+                  onClick={() => setZoom(true)}
+                  aria-label="View certificate fullscreen"
+                  className="group relative block w-full cursor-zoom-in overflow-hidden rounded-2xl border border-ink/10 bg-white"
+                >
                   <Img
                     src={t.certificate}
                     alt={`${t.title} certificate`}
@@ -193,12 +219,45 @@ export default function Education() {
                     height={1414}
                     className="h-auto w-full"
                   />
-                </div>
+                  <span className="pointer-events-none absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-3 py-1.5 text-[12px] font-semibold text-white transition-opacity group-hover:bg-black/70">
+                    <Icon name="maximize" size={13} />
+                    Fullscreen
+                  </span>
+                </button>
               </>
             )}
           </>
         )}
       </DetailModal>
+
+      {/* Fullscreen certificate — rendered at section level (not inside the modal)
+          so `fixed` positions to the viewport, not the modal's transformed panel. */}
+      {zoom && t?.certificate && (
+        <div
+          className="fixed inset-0 z-[110] flex items-center justify-center bg-black/90 p-4"
+          onClick={() => setZoom(false)}
+        >
+          <button
+            onClick={() => setZoom(false)}
+            aria-label="Close fullscreen"
+            className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/20 text-white hover:bg-white/30"
+          >
+            <Icon name="x" size={22} />
+          </button>
+          <div
+            className="relative h-full max-h-[90vh] w-full max-w-6xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Img
+              src={t.certificate}
+              alt={`${t.title} certificate`}
+              fill
+              className="object-contain"
+              sizes="100vw"
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 }

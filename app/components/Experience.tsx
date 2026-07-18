@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Img from "./Img";
 import { AnimatePresence, motion } from "framer-motion";
@@ -18,13 +18,32 @@ export default function Experience() {
   const supported = useMotionSupported();
   const enabled = useAnimations();
 
+  // dir drives the slide direction of the animated gallery (1 = next, -1 = prev).
+  const [dir, setDir] = useState(0);
   const closeGallery = useCallback(() => setGalleryIdx(null), []);
-  const prev = useCallback(() => {
-    setGalleryIdx((i) => (i !== null && job ? (i - 1 + job.gallery.length) % job.gallery.length : null));
-  }, [job]);
-  const next = useCallback(() => {
-    setGalleryIdx((i) => (i !== null && job ? (i + 1) % job.gallery.length : null));
-  }, [job]);
+  const paginate = useCallback(
+    (d: number) => {
+      setDir(d);
+      setGalleryIdx((i) => (i !== null && job ? (i + d + job.gallery.length) % job.gallery.length : null));
+    },
+    [job],
+  );
+  const prev = useCallback(() => paginate(-1), [paginate]);
+  const next = useCallback(() => paginate(1), [paginate]);
+
+  // Fallback swipe (no framer): horizontal drag past a threshold flips image.
+  const touchStartX = useRef<number | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(dx) < 50) return; // ignore taps / tiny drags
+    if (dx < 0) next();
+    else prev();
+  };
 
   useEffect(() => {
     if (galleryIdx === null) return;
@@ -171,7 +190,7 @@ export default function Experience() {
               </div>
               <span className="text-[12.5px] font-semibold text-[#9aa39e]">Photos & videos</span>
             </div>
-            <div className="grid grid-cols-3 gap-3.5">
+            <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3">
               {job.gallery.map((g, gi) => (
                 <button
                   key={g}
@@ -183,7 +202,7 @@ export default function Experience() {
                     alt={`${job.role} at ${job.org} — activity ${gi + 1}`}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 640px) 33vw, 200px"
+                    sizes="(max-width: 639px) 50vw, 200px"
                   />
                 </button>
               ))}
@@ -193,7 +212,10 @@ export default function Experience() {
       </DetailModal>
 
       {(() => {
-        const inner = galleryImage && (
+        const cls = "fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4";
+
+        // Gallery chrome (close / prev / next / counter) wrapped around an image slot.
+        const chrome = (imageSlot: React.ReactNode) => (
           <>
             <button
               onClick={closeGallery}
@@ -216,14 +238,11 @@ export default function Experience() {
             >
               <Icon name="arrow-right" size={24} />
             </button>
-            <div className="relative flex h-full max-h-[85vh] w-full max-w-5xl items-center justify-center" onClick={(e) => e.stopPropagation()}>
-              <Img
-                src={galleryImage}
-                alt=""
-                fill
-                className="object-contain"
-                sizes="90vw"
-              />
+            <div
+              className="relative flex h-full max-h-[85vh] w-full max-w-5xl items-center justify-center overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {imageSlot}
             </div>
             {job && (
               <div className="absolute bottom-4 rounded-full bg-black/50 px-4 py-2 text-[13px] font-semibold text-white">
@@ -232,10 +251,47 @@ export default function Experience() {
             )}
           </>
         );
-        const cls = "fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4";
+
+        const staticImg = (
+          <Img src={galleryImage!} alt="" fill className="object-contain" sizes="90vw" />
+        );
+
+        // Draggable, sliding image: follows the finger and springs to the next/prev
+        // photo. New photo enters from the drag direction, old one exits the other way.
+        const slideVariants = {
+          enter: (d: number) => ({ x: d >= 0 ? "100%" : "-100%", opacity: 0 }),
+          center: { x: 0, opacity: 1 },
+          exit: (d: number) => ({ x: d >= 0 ? "-100%" : "100%", opacity: 0 }),
+        };
+        const animatedImg = (
+          <AnimatePresence custom={dir} initial={false}>
+            <motion.div
+              key={galleryIdx}
+              custom={dir}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ x: { type: "spring", stiffness: 300, damping: 32 }, opacity: { duration: 0.15 } }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.7}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -60 || info.velocity.x < -500) next();
+                else if (info.offset.x > 60 || info.velocity.x > 500) prev();
+              }}
+              className="absolute inset-0 cursor-grab active:cursor-grabbing"
+            >
+              <Img src={galleryImage!} alt="" fill className="pointer-events-none object-contain" sizes="90vw" />
+            </motion.div>
+          </AnimatePresence>
+        );
+
         if (!supported) {
           return galleryImage && (
-            <div className={cls} onClick={closeGallery}>{inner}</div>
+            <div className={cls} onClick={closeGallery} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+              {chrome(staticImg)}
+            </div>
           );
         }
         return (
@@ -247,8 +303,9 @@ export default function Experience() {
                 exit={enabled ? { opacity: 0 } : { opacity: 1 }}
                 className={cls}
                 onClick={closeGallery}
+                {...(enabled ? {} : { onTouchStart, onTouchEnd })}
               >
-                {inner}
+                {chrome(enabled ? animatedImg : staticImg)}
               </motion.div>
             )}
           </AnimatePresence>

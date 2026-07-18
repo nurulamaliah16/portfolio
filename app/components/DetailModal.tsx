@@ -32,7 +32,7 @@ export default function DetailModal({
     <Modal open={open} onClose={onClose} hideClose>
       <div
         ref={headerRef}
-        className="sticky top-0 z-[5] rounded-t-[26px] px-10 transition-all duration-300 ease-out"
+        className="sticky top-0 z-[5] rounded-t-[26px] px-5 transition-all duration-300 ease-out sm:px-10"
         style={{ background: bg, paddingTop: pick(32, 15), paddingBottom: pick(25, 13) }}
       >
         <button
@@ -50,10 +50,10 @@ export default function DetailModal({
           >
             {icon}
           </span>
-          <div className="min-w-0 flex-1 pr-12">
+          <div className="min-w-0 flex-1 pr-9 sm:pr-12">
             <div
               className="font-fred font-semibold leading-[1.18] text-ink transition-all duration-300 ease-out"
-              style={{ fontSize: pick(24, 16) }}
+              style={{ fontSize: pick<string | number>("clamp(19px, 5vw, 24px)", 16) }}
             >
               {title}
             </div>
@@ -74,7 +74,7 @@ export default function DetailModal({
           </div>
         )}
       </div>
-      <div className="px-10 pb-9 pt-7">{children}</div>
+      <div className="px-5 pb-9 pt-7 sm:px-10">{children}</div>
     </Modal>
   );
 }

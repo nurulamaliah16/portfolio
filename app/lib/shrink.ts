@@ -14,6 +14,14 @@ export const ROOM_GUARD = 120;
  * @param room       scroller.scrollHeight - scroller.clientHeight
  */
 export function shouldCompact(prev: boolean, scrollTop: number, room: number): boolean {
-  if (prev) return scrollTop >= 10; // stay compact until very near the top
+  if (prev) {
+    // Stay compact until scrolled back near the actual top. But if scrollTop is
+    // small only because the collapsed header left almost no scroll room (i.e.
+    // we're pinned at the bottom), stay compact anyway — otherwise the collapse
+    // clamps scrollTop under the expand threshold and the header flip-flops
+    // forever on short modals (e.g. a certificate detail on a small phone).
+    const atBottom = room > 4 && scrollTop >= room - 4;
+    return scrollTop >= 10 || atBottom;
+  }
   return scrollTop > 110 && room > ROOM_GUARD;
 }

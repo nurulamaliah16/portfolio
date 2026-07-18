@@ -25,4 +25,20 @@ describe("shouldCompact", () => {
   it("expands only when back very near the top", () => {
     expect(shouldCompact(true, 5, tall)).toBe(false);
   });
+
+  it("stays compact when pinned at the bottom of a short modal (no flip-flop)", () => {
+    // Collapse shrank room to ~9 and clamped scrollTop there — must NOT expand,
+    // or the header oscillates. scrollTop < 10 but we're at the bottom.
+    expect(shouldCompact(true, 9, 9)).toBe(true);
+    expect(shouldCompact(true, 6, 8)).toBe(true);
+  });
+
+  it("still expands near the top when there is real room above", () => {
+    expect(shouldCompact(true, 5, 200)).toBe(false);
+  });
+
+  it("does not get stuck compact when the modal is unscrollable (room <= 4)", () => {
+    // room-4 <= 0 would make scrollTop 0 count as 'at bottom' and trap it compact.
+    expect(shouldCompact(true, 0, 4)).toBe(false);
+  });
 });
