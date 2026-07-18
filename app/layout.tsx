@@ -37,11 +37,13 @@ export const metadata: Metadata = {
     url: SITE_URL,
     title: "Nurul Amaliah — Governance Research & Social Media Strategist",
     description: DESCRIPTION,
+    images: [{ url: `${SITE_URL}/images/gf.png`, width: 460, height: 460 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Nurul Amaliah — Governance Research & Social Media Strategist",
     description: DESCRIPTION,
+    images: [`${SITE_URL}/images/gf.png`],
   },
 };
 

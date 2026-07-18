@@ -3,12 +3,14 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+import { TextPlugin } from "gsap/TextPlugin";
 import Img from "./Img";
 import Icon from "./Icon";
 import { EMAIL } from "../data";
 import { useAnimations } from "../lib/motion";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText, TextPlugin);
 
 // useLayoutEffect flashes a warning during SSR; fall back to useEffect on server.
 const useIso = typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -29,6 +31,9 @@ export default function Hero() {
     const root = rootRef.current;
     if (!root || !animate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    let cancelled = false;
+    let split: SplitText | undefined;
+
     const ctx = gsap.context(() => {
       const ease = "power3.out";
       gsap.set(
@@ -38,10 +43,41 @@ export default function Hero() {
       gsap.set("[data-hero='portrait']", { scale: 0.94, y: 0 });
       gsap.set("[data-blob]", { scale: 0.8, opacity: 0 });
 
+      // Title pops in char by char; split after fonts load so font-fred measures right.
+      // The typing word stays unsplit so TextPlugin can rewrite its text.
+      const wordEl = root.querySelector<HTMLElement>("[data-typing]");
+      const cursorEl = root.querySelector<HTMLElement>("[data-cursor]");
+      document.fonts.ready.then(() => {
+        if (cancelled) return;
+        split = new SplitText(root.querySelectorAll("[data-split]"), { type: "chars" });
+        const pieces = [...split.chars, ...(wordEl ? [wordEl] : [])];
+        gsap.set(pieces, { opacity: 0, y: 26, scale: 0.5, display: "inline-block" });
+        gsap.set("[data-hero='title']", { opacity: 1, y: 0 });
+        gsap.to(pieces, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          stagger: 0.028,
+          duration: 0.55,
+          ease: "back.out(2)",
+          delay: 0.15,
+          onComplete: () => {
+            if (cancelled || !wordEl || !cursorEl) return;
+            // typing loop: Ama -> Nurul -> Ama, blinking cursor alongside
+            gsap.set(cursorEl, { display: "inline-block" });
+            gsap
+              .timeline({ repeat: -1 })
+              .to(wordEl, { text: "", duration: 0.3, ease: "none" }, "+=5")
+              .to(wordEl, { text: "Nurul", duration: 0.5, ease: "none" })
+              .to(wordEl, { text: "", duration: 0.35, ease: "none" }, "+=5")
+              .to(wordEl, { text: "Ama", duration: 0.35, ease: "none" });
+          },
+        });
+      });
+
       const tl = gsap.timeline({ defaults: { ease, duration: 0.7 } });
       tl.to("[data-blob]", { scale: 1, opacity: 1, duration: 0.9, stagger: 0.12 }, 0)
         .to("[data-hero='portrait']", { opacity: 1, scale: 1, duration: 0.9 }, 0.1)
-        .to("[data-hero='title']", { opacity: 1, y: 0 }, 0.15)
         .to("[data-hero='intro']", { opacity: 1, y: 0 }, 0.3)
         .to("[data-hero='email']", { opacity: 1, y: 0 }, 0.42)
         .to("[data-chip]", { opacity: 1, y: 0, stagger: 0.09, duration: 0.5 }, 0.5)
@@ -61,7 +97,14 @@ export default function Hero() {
       });
     }, root);
 
-    return () => ctx.revert();
+    return () => {
+      cancelled = true;
+      split?.revert();
+      ctx.revert();
+      // TextPlugin mutates textContent; ctx.revert doesn't restore it
+      const w = root.querySelector("[data-typing]");
+      if (w) w.textContent = "Ama";
+    };
   }, [animate]);
 
   // gsap: gentle parallax drift of the hero blobs following the cursor
@@ -93,10 +136,16 @@ export default function Hero() {
           className="font-fred mb-6 text-[46px] font-semibold leading-[1.02] tracking-[-1px] sm:text-[72px]"
         >
           <span className="sr-only">Nurul Amaliah — </span>
-          <span aria-hidden="true">
-            Hey There,
+          <span aria-hidden="true" data-hero-title-text>
+            <span data-split>Hey There,</span>
             <br />
-            I&apos;m <span className="text-green">Ama</span>
+            <span data-split>I&apos;m</span>{" "}
+            <span data-typing className="text-green">
+              Ama
+            </span>
+            <span data-cursor className="typing-cursor hidden text-green">
+              |
+            </span>
           </span>
         </h1>
         <p data-hero="intro" className="mb-6 max-w-[440px] text-[17px] leading-[1.6] text-[#43544f]">
@@ -117,7 +166,7 @@ export default function Hero() {
             <span
               key={c.label}
               data-chip
-              className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-[14px] font-bold"
+              className="wiggle inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-[14px] font-bold"
               style={{ background: c.bg, color: c.color }}
             >
               <Icon name={c.icon} size={15} />
@@ -128,7 +177,7 @@ export default function Hero() {
         <div data-hero="cta" className="flex flex-wrap items-center gap-4">
           <a
             href="#portfolio"
-            className="inline-flex items-center gap-2.5 rounded-full bg-green px-[26px] py-3.5 text-[16px] font-bold text-cream transition-transform hover:-translate-y-0.5"
+            className="wiggle inline-flex items-center gap-2.5 rounded-full bg-green px-[26px] py-3.5 text-[16px] font-bold text-cream"
             style={{ boxShadow: "0 16px 30px -16px rgba(44,107,94,.7)" }}
           >
             View my work <Icon name="arrow-right" size={18} />

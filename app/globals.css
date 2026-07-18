@@ -64,6 +64,65 @@ body {
   border-radius: 58% 42% 47% 53% / 52% 45% 55% 48%;
 }
 
+/* idle morph keeps the blobs feeling alive; starts/ends at the static shape */
+@media (prefers-reduced-motion: no-preference) {
+  .blob-a {
+    animation: blob-morph-a 14s ease-in-out infinite alternate;
+  }
+  .blob-b {
+    animation: blob-morph-b 18s ease-in-out infinite alternate;
+  }
+}
+@keyframes blob-morph-a {
+  0% {
+    border-radius: 63% 37% 54% 46% / 58% 52% 48% 42%;
+  }
+  50% {
+    border-radius: 44% 56% 62% 38% / 48% 60% 40% 52%;
+  }
+  100% {
+    border-radius: 57% 43% 40% 60% / 62% 44% 56% 38%;
+  }
+}
+@keyframes blob-morph-b {
+  0% {
+    border-radius: 58% 42% 47% 53% / 52% 45% 55% 48%;
+  }
+  50% {
+    border-radius: 42% 58% 60% 40% / 44% 58% 42% 56%;
+  }
+  100% {
+    border-radius: 60% 40% 42% 58% / 56% 42% 58% 44%;
+  }
+}
+
+/* blinking caret for the hero typing effect; shown via JS only when animating */
+.typing-cursor {
+  margin-left: 0.06em;
+  font-weight: 400;
+  animation: cursor-blink 1s steps(1) infinite;
+}
+@keyframes cursor-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* springy hover wiggle for chips/CTAs; hover-capable pointers only */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .wiggle {
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .wiggle:hover {
+    transform: scale(1.06) rotate(-1.5deg);
+  }
+}
+
 .font-fred {
   font-family: var(--font-fred);
 }

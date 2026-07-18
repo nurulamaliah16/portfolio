@@ -24,7 +24,7 @@ export default function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-3.5">
             <a
               href={`mailto:${EMAIL}`}
-              className="inline-flex items-center gap-2.5 rounded-full bg-amber px-7 py-3.5 text-[16px] font-extrabold text-ink"
+              className="wiggle inline-flex items-center gap-2.5 rounded-full bg-amber px-7 py-3.5 text-[16px] font-extrabold text-ink"
               style={{ boxShadow: "0 18px 34px -16px rgba(232,168,60,.6)" }}
             >
               <Icon name="mail" size={18} />
@@ -37,7 +37,7 @@ export default function Footer() {
           <a
             href="https://www.linkedin.com/in/nurulamaliah16/"
             target="_blank"
-            className="inline-flex items-center gap-2 rounded-full bg-cream/10 px-[18px] py-2.5 text-[14px] font-bold text-cream hover:bg-cream/20"
+            className="wiggle inline-flex items-center gap-2 rounded-full bg-cream/10 px-[18px] py-2.5 text-[14px] font-bold text-cream hover:bg-cream/20"
           >
             <Icon name="briefcase" size={16} />
             LinkedIn
@@ -45,7 +45,7 @@ export default function Footer() {
           <a
             href="https://www.instagram.com/nurulaamaliahh"
             target="_blank"
-            className="inline-flex items-center gap-2 rounded-full bg-cream/10 px-[18px] py-2.5 text-[14px] font-bold text-cream hover:bg-cream/20"
+            className="wiggle inline-flex items-center gap-2 rounded-full bg-cream/10 px-[18px] py-2.5 text-[14px] font-bold text-cream hover:bg-cream/20"
           >
             <Icon name="camera" size={16} />
             Instagram

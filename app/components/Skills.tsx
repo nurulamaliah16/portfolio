@@ -56,11 +56,11 @@ export default function Skills() {
               Languages
             </span>
             <div className="flex flex-wrap gap-2.5 sm:contents">
-              <span className="inline-flex items-center gap-2 rounded-full bg-green px-3.5 py-[7px] text-[12.5px] font-extrabold text-cream">
+              <span className="wiggle inline-flex items-center gap-2 rounded-full bg-green px-3.5 py-[7px] text-[12.5px] font-extrabold text-cream">
                 <Icon name="badge-check" size={15} style={{ color: "#E8A83C" }} />
                 English · IELTS <span className="text-amber">6.0</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-green-tint px-3 py-[7px] text-[12.5px] font-bold text-green">
+              <span className="wiggle inline-flex items-center gap-1.5 rounded-full bg-green-tint px-3 py-[7px] text-[12.5px] font-bold text-green">
                 <Icon name="globe" size={14} />
                 Bahasa Indonesia · Native
               </span>
