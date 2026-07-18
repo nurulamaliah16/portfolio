@@ -188,7 +188,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div ref={blobRef} className="relative flex h-[420px] items-end justify-center sm:h-[520px]">
+      <div ref={blobRef} className="relative flex h-[420px] items-start justify-center sm:h-[520px]">
         <div
           data-blob
           className="blob-a absolute left-1/2 top-[34px] h-[340px] w-[300px] -translate-x-1/2 -rotate-6 bg-green sm:h-[430px] sm:w-[400px]"
@@ -200,14 +200,14 @@ export default function Hero() {
         <div
           data-hero="portrait"
           data-parallax="portrait"
-          className="relative z-[1] h-[380px] w-[280px] overflow-hidden rounded-[36px] sm:w-[340px]"
+          className="relative z-[1] h-[500px] w-[340px] overflow-hidden rounded-[36px] sm:h-[540px] sm:w-[460px]"
         >
           <Img
             src="/images/gf.png"
             alt="Portrait of Ama"
             fill
-            className="object-cover object-[50%_30%]"
-            sizes="(max-width: 640px) 380px, 460px"
+            className="object-cover object-[50%_100%]"
+            sizes="(max-width: 640px) 500px, 640px"
             priority
           />
         </div>
