@@ -7,7 +7,7 @@ import { SplitText } from "gsap/SplitText";
 import { TextPlugin } from "gsap/TextPlugin";
 import Img from "./Img";
 import Icon from "./Icon";
-import { EMAIL } from "../data";
+import { EMAIL, SITE_TITLE } from "../data";
 import { useAnimations } from "../lib/motion";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, TextPlugin);
@@ -135,7 +135,7 @@ export default function Hero() {
           data-hero="title"
           className="font-fred mb-6 text-[46px] font-semibold leading-[1.02] tracking-[-1px] sm:text-[72px]"
         >
-          <span className="sr-only">Nurul Amaliah — </span>
+          <span className="sr-only">{SITE_TITLE}. </span>
           <span aria-hidden="true" data-hero-title-text>
             <span data-split>Hey There,</span>
             <br />
@@ -204,7 +204,7 @@ export default function Hero() {
         >
           <Img
             src="/images/gf.png"
-            alt="Portrait of Ama"
+            alt="Portrait of Nurul Amaliah"
             fill
             className="object-cover object-[50%_100%]"
             sizes="(max-width: 640px) 500px, 640px"

@@ -37,6 +37,7 @@ export default function Footer() {
           <a
             href="https://www.linkedin.com/in/nurulamaliah16/"
             target="_blank"
+            rel="noopener noreferrer"
             className="wiggle inline-flex items-center gap-2 rounded-full bg-cream/10 px-[18px] py-2.5 text-[14px] font-bold text-cream hover:bg-cream/20"
           >
             <Icon name="briefcase" size={16} />
@@ -45,6 +46,7 @@ export default function Footer() {
           <a
             href="https://www.instagram.com/nurulaamaliahh"
             target="_blank"
+            rel="noopener noreferrer"
             className="wiggle inline-flex items-center gap-2 rounded-full bg-cream/10 px-[18px] py-2.5 text-[14px] font-bold text-cream hover:bg-cream/20"
           >
             <Icon name="camera" size={16} />

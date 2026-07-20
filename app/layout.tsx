@@ -2,7 +2,15 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Fredoka, Nunito_Sans, Caveat } from "next/font/google";
 import "./globals.css";
-import { SITE_URL, SAME_AS, EMAIL, research, researchWorks } from "./data";
+import {
+  SITE_URL,
+  SITE_TITLE,
+  JOB_TITLE,
+  SAME_AS,
+  EMAIL,
+  research,
+  researchWorks,
+} from "./data";
 import { MotionProvider } from "./lib/motion";
 import { computeServerAnimate } from "./lib/ua";
 
@@ -29,21 +37,23 @@ const DESCRIPTION =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Nurul Amaliah — Governance Research & Social Media Strategist",
+  title: SITE_TITLE,
   description: DESCRIPTION,
+  authors: [{ name: "Nurul Amaliah", url: SITE_URL }],
   alternates: { canonical: "/" },
+  // Image from app/opengraph-image.tsx (1200×630 — portrait + title for WA/FB/X)
   openGraph: {
-    type: "profile",
+    type: "website",
     url: SITE_URL,
-    title: "Nurul Amaliah — Governance Research & Social Media Strategist",
+    siteName: "Nurul Amaliah",
+    locale: "en_US",
+    title: SITE_TITLE,
     description: DESCRIPTION,
-    images: [{ url: `${SITE_URL}/images/gf.png`, width: 460, height: 460 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nurul Amaliah — Governance Research & Social Media Strategist",
+    title: SITE_TITLE,
     description: DESCRIPTION,
-    images: [`${SITE_URL}/images/gf.png`],
   },
 };
 
@@ -75,17 +85,47 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Nurul Amaliah",
+      description: DESCRIPTION,
+      publisher: { "@id": PERSON_ID },
+      inLanguage: "en",
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${SITE_URL}/#profilepage`,
+      url: SITE_URL,
+      name: SITE_TITLE,
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      mainEntity: { "@id": PERSON_ID },
+      inLanguage: "en",
+    },
+    {
       "@type": "Person",
       "@id": PERSON_ID,
       name: "Nurul Amaliah",
       url: SITE_URL,
       email: `mailto:${EMAIL}`,
-      jobTitle: "Governance Researcher & Social Media Strategist",
+      jobTitle: JOB_TITLE,
       description: DESCRIPTION,
       image: `${SITE_URL}/images/gf.png`,
       alumniOf: [
         { "@type": "CollegeOrUniversity", name: "Universitas Gadjah Mada" },
         { "@type": "CollegeOrUniversity", name: "Universitas Negeri Semarang" },
+      ],
+      worksFor: [
+        {
+          "@type": "Organization",
+          name: "Unjuk Daya",
+          sameAs: "https://www.instagram.com/unjukdaya",
+        },
+        {
+          "@type": "Organization",
+          name: "Rumah Inggris Jogja",
+          sameAs: "https://www.instagram.com/rumahinggrisjogja_official",
+        },
       ],
       ...(SAME_AS.length > 0 && { sameAs: SAME_AS }),
     },

@@ -120,11 +120,20 @@ function IgEmbed({ item }: { item: Work }) {
       className="flex h-full flex-col overflow-hidden rounded-[20px] border border-ink/5 bg-white transition-transform duration-300 hover:-translate-y-1"
       style={{ boxShadow: "0 24px 46px -32px rgba(31,61,56,.45)" }}
     >
+      {/* Crawlable fallback: embed.js hides this after hydrate; crawlers still see link text. */}
+      <p className="sr-only">
+        Instagram {item.format}:{" "}
+        <a href={item.url} target="_blank" rel="noopener noreferrer">
+          View on Instagram
+        </a>
+      </p>
       <blockquote
         className="instagram-media"
         data-instgrm-permalink={item.url}
         data-instgrm-version="14"
-      />
+      >
+        <a href={item.url}>{`Instagram ${item.format}`}</a>
+      </blockquote>
     </div>
   );
 }

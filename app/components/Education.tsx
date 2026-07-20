@@ -45,7 +45,7 @@ export default function Education() {
           <div className="flex h-full flex-col rounded-3xl bg-green px-8 py-[30px] text-cream">
             <div className="mb-[18px] flex items-center justify-between">
               <span className="relative grid h-20 w-20 place-items-center overflow-hidden rounded-[18px]">
-                <Image src="/images/education/ugm/logo.png" alt="UGM" fill className="object-cover" sizes="80px" />
+                <Image src="/images/education/ugm/logo.png" alt="Universitas Gadjah Mada logo" fill className="object-cover" sizes="80px" />
               </span>
               <span className="rounded-full bg-cream/20 px-3 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.4px]">
                 Master&apos;s
@@ -80,7 +80,7 @@ export default function Education() {
           >
             <div className="mb-[18px] flex items-center justify-between">
               <span className="relative grid h-20 w-20 place-items-center">
-                <Image src="/images/education/unnes/logo.png" alt="UNNES" fill className="object-cover" sizes="80px" />
+                <Image src="/images/education/unnes/logo.png" alt="Universitas Negeri Semarang logo" fill className="object-cover" sizes="80px" />
               </span>
               <span className="rounded-full bg-amber-tint px-3 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.4px] text-[#b07d22]">
                 Bachelor&apos;s

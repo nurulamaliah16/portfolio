@@ -103,7 +103,7 @@ export default function Experience() {
                     <a
                       href={j.link}
                       target="_blank"
-                      rel="noopener"
+                      rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
                       title="Visit"
                       className="grid h-6 w-6 flex-none place-items-center rounded-full"
@@ -156,7 +156,7 @@ export default function Experience() {
                 <a
                   href={job.link}
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-full px-[15px] py-1.5 text-[13px] font-bold text-white"
                   style={{ background: job.color }}
                 >
@@ -253,7 +253,13 @@ export default function Experience() {
         );
 
         const staticImg = (
-          <Img src={galleryImage!} alt="" fill className="object-contain" sizes="90vw" />
+          <Img
+            src={galleryImage!}
+            alt={job ? `${job.role} at ${job.org} — activity ${(galleryIdx ?? 0) + 1}` : "Experience activity"}
+            fill
+            className="object-contain"
+            sizes="90vw"
+          />
         );
 
         // Draggable, sliding image: follows the finger and springs to the next/prev
@@ -282,7 +288,13 @@ export default function Experience() {
               }}
               className="absolute inset-0 cursor-grab active:cursor-grabbing"
             >
-              <Img src={galleryImage!} alt="" fill className="pointer-events-none object-contain" sizes="90vw" />
+              <Img
+                src={galleryImage!}
+                alt={job ? `${job.role} at ${job.org} — activity ${(galleryIdx ?? 0) + 1}` : "Experience activity"}
+                fill
+                className="pointer-events-none object-contain"
+                sizes="90vw"
+              />
             </motion.div>
           </AnimatePresence>
         );

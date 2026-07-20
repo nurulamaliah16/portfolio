@@ -273,6 +273,10 @@ export const EMAIL = "nurulamaliah@mail.ugm.ac.id";
 
 export const SITE_URL = "https://nurulamaliah.vercel.app";
 
+export const JOB_TITLE = "Governance Researcher & Social Media Strategist";
+
+export const SITE_TITLE = `Nurul Amaliah — ${JOB_TITLE}`;
+
 // Personal profile URLs for Person JSON-LD sameAs. Paste real links here.
 export const SAME_AS: string[] = [
   "https://www.linkedin.com/in/nurulamaliah16/",
